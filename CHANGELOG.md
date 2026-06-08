@@ -5,7 +5,7 @@
 Формат основан на [Keep a Changelog](https://keepachangelog.com/ru/1.0.0/),
 проект придерживается [семантического версионирования](https://semver.org/lang/ru/).
 
-## [0.1.0] - Unreleased
+## [1.0.0]
 
 ### Added
 - Python SDK для API Авито Реклама в **двух режимах работы**: синхронном
