@@ -1,0 +1,79 @@
+"""Синхронный поставщик токена (OAuth2 client_credentials) на ``httpx.Client``."""
+
+from __future__ import annotations
+
+import logging
+import time
+from typing import Optional
+
+import httpx
+
+from ..auth.credentials import Credentials
+from ..auth.storage import TokenStorage
+from ..auth.token import AccessToken
+from ..exceptions import AuthenticationError, NetworkError
+
+
+class SyncTokenProvider:
+    """Получение, кэширование и обновление токена через эндпоинт ``/token``."""
+
+    def __init__(
+        self,
+        client: httpx.Client,
+        credentials: Credentials,
+        token_url: str,
+        storage: TokenStorage,
+        leeway: int = 60,
+        timeout: float = 30.0,
+        user_agent: str = "avito-ads-python/0.1.0",
+        logger: Optional[logging.Logger] = None,
+    ) -> None:
+        self._client = client
+        self._credentials = credentials
+        self._token_url = token_url
+        self._storage = storage
+        self._leeway = leeway
+        self._timeout = timeout
+        self._user_agent = user_agent
+        self._logger = logger
+        self._cache_key = credentials.cache_key()
+
+    def get_token(self) -> AccessToken:
+        cached = self._storage.get(self._cache_key)
+        if cached is not None and not cached.is_expired(self._leeway):
+            return cached
+        token = self._fetch_token()
+        self._storage.set(self._cache_key, token)
+        return token
+
+    def forget_token(self) -> None:
+        self._storage.delete(self._cache_key)
+
+    def _fetch_token(self) -> AccessToken:
+        if self._logger is not None:
+            self._logger.debug("Запрос нового токена Авито Реклама.")
+        try:
+            response = self._client.post(
+                self._token_url,
+                data={
+                    "grant_type": "client_credentials",
+                    "client_id": self._credentials.client_id,
+                    "client_secret": self._credentials.client_secret,
+                },
+                headers={"Accept": "application/json", "User-Agent": self._user_agent},
+                timeout=self._timeout,
+            )
+        except httpx.RequestError as exc:
+            raise NetworkError(f"Не удалось получить токен: {exc}") from exc
+
+        if response.status_code != 200:
+            raise AuthenticationError(
+                f"Не удалось получить токен (HTTP {response.status_code}).",
+                status_code=response.status_code,
+                response=response,
+            )
+        try:
+            data = response.json()
+        except ValueError as exc:
+            raise AuthenticationError("Некорректный JSON в ответе эндпоинта /token.") from exc
+        return AccessToken.from_response(data, now=time.time())
