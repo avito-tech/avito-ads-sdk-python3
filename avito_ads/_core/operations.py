@@ -10,10 +10,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, Callable, Dict, Generic, List, Optional, TypeVar, Union
+from typing import Any, Callable, Dict, Generic, List, Optional, Type, TypeVar, Union
 
 from ..contract_builder import ContractBuilder
-from ..enums import UserRole
+from ..enums import LegalType, UserRole
 from ..exceptions import ConfigurationError, ValidationError
 from ..filters import BaseFilter
 from ..models import (
@@ -29,14 +29,17 @@ from ..models import (
     CreatedChildAccount,
     CreatedContract,
     Creative,
+    CreativeStatistic,
     EntityStatistic,
     Group,
+    GroupStatistic,
     User,
 )
 from ..pagination import DEFAULT_LIMIT, ListRequest, PaginatedResult
 from .response import ApiResponse
 
 T = TypeVar("T")
+S = TypeVar("S", bound=EntityStatistic)
 
 FilterType = Union[Dict[str, Any], BaseFilter, None]
 
@@ -108,10 +111,10 @@ def _list_operation(
     return Operation("POST", account_path(account_id, suffix), request.to_dict(), parse)
 
 
-def _entities(rows: object) -> List[EntityStatistic]:
+def _entities(rows: object, model: Type[S]) -> List[S]:
     if not isinstance(rows, list):
         return []
-    return [EntityStatistic.from_dict(row) for row in rows if isinstance(row, dict)]
+    return [model.from_dict(row) for row in rows if isinstance(row, dict)]
 
 
 # --- Account ----------------------------------------------------------------
@@ -139,14 +142,18 @@ def create_sandbox_account(
     long_name: str,
     ogrn: str,
     legal_address: str,
-    actual_address: str,
+    actual_address: Optional[str],
     contact: Dict[str, Any],
     kpp: Optional[str] = None,
-    legal_type: Optional[str] = None,
+    legal_type: Union[str, LegalType, None] = None,
 ) -> "Operation[CreatedAccount]":
     if not contact:
         raise ConfigurationError(
             "Для создания аккаунта необходимо передать контактное лицо (contact)."
+        )
+    if legal_type is None:
+        raise ValidationError(
+            "Для создания аккаунта необходимо передать тип юрлица (legal_type: 'ul' или 'ip')."
         )
     body: Dict[str, Any] = {
         "inn": inn,
@@ -154,13 +161,13 @@ def create_sandbox_account(
         "longName": long_name,
         "ogrn": ogrn,
         "legalAddress": legal_address,
-        "actualAddress": actual_address,
+        "legalType": LegalType.assert_valid(legal_type),
         "contact": contact,
     }
+    if actual_address is not None:
+        body["actualAddress"] = actual_address
     if kpp is not None:
         body["kpp"] = kpp
-    if legal_type is not None:
-        body["legalType"] = legal_type
     return Operation(
         "POST", account_path(account_id), body, lambda r: CreatedAccount.from_dict(r.data)
     )
@@ -282,6 +289,7 @@ def list_creatives(
 
 
 def change_group_budget(account_id: int, group_id: int, budget: int) -> "Operation[None]":
+    """Изменение бюджета группы; при конфликте версий API отвечает 409 (``ConflictError``)."""
     if budget < 1:
         raise ValidationError(f"Бюджет должен быть не менее 1, передано {budget}.")
     return Operation(
@@ -293,6 +301,7 @@ def change_group_budget(account_id: int, group_id: int, budget: int) -> "Operati
 
 
 def change_group_price(account_id: int, group_id: int, price: int) -> "Operation[None]":
+    """Изменение ставки группы; при конфликте версий API отвечает 409 (``ConflictError``)."""
     if price < 1:
         raise ValidationError(f"Ставка должна быть не менее 1, передано {price}.")
     return Operation(
@@ -337,25 +346,25 @@ def campaign_statistics(
 
 def group_statistics(
     account_id: int, campaign_id: int, date_from: str, date_to: str, group_ids: List[int]
-) -> "Operation[List[EntityStatistic]]":
+) -> "Operation[List[GroupStatistic]]":
     _assert_period(date_from, date_to)
     return Operation(
         "POST",
         account_path(account_id, f"campaigns/{campaign_id}/groups/stats"),
         {"dateFrom": date_from, "dateTo": date_to, "groupIDs": list(group_ids)},
-        lambda r: _entities(r.data.get("groups", [])),
+        lambda r: _entities(r.data.get("groups", []), GroupStatistic),
     )
 
 
 def creative_statistics(
     account_id: int, campaign_id: int, date_from: str, date_to: str, creative_ids: List[int]
-) -> "Operation[List[EntityStatistic]]":
+) -> "Operation[List[CreativeStatistic]]":
     _assert_period(date_from, date_to)
     return Operation(
         "POST",
         account_path(account_id, f"campaigns/{campaign_id}/creatives/stats"),
         {"dateFrom": date_from, "dateTo": date_to, "creativeIDs": list(creative_ids)},
-        lambda r: _entities(r.data.get("creatives", [])),
+        lambda r: _entities(r.data.get("creatives", []), CreativeStatistic),
     )
 
 

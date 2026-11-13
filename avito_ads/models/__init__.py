@@ -14,9 +14,16 @@ from .created import (
     CreatedChildAccount,
     CreatedContract,
 )
-from .creative import Creative
-from .group import Group
-from .statistics import CampaignStatisticResult, EntityStatistic, StatsData
+from .creative import Creative, KKTUFieldValue
+from .group import FrequencyRule, Group
+from .statistics import (
+    CampaignStatistic,
+    CampaignStatisticResult,
+    CreativeStatistic,
+    EntityStatistic,
+    GroupStatistic,
+    StatsData,
+)
 from .user import User
 
 __all__ = [
@@ -32,9 +39,14 @@ __all__ = [
     "CreatedChildAccount",
     "CreatedContract",
     "Creative",
+    "KKTUFieldValue",
     "Group",
+    "FrequencyRule",
+    "CampaignStatistic",
     "CampaignStatisticResult",
+    "CreativeStatistic",
     "EntityStatistic",
+    "GroupStatistic",
     "StatsData",
     "User",
 ]

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import List, Optional
 
 from .base import Model
 
@@ -24,11 +24,24 @@ class CreatedAdvertiser(Model):
 
 
 class CreatedAccount(Model):
-    """Результат создания тестового аккаунта (песочница)."""
+    """Результат создания тестового аккаунта (песочница).
+
+    API отвечает ``200``, если аккаунт подготовлен полностью, и ``207``, если
+    аккаунт создан, но часть sandbox-данных не подготовилась. Оба ответа —
+    успех; причины во втором случае — в :attr:`warnings`.
+    """
 
     @property
     def account_id(self) -> Optional[int]:
         return self._int("accountID")
+
+    @property
+    def warnings(self) -> List[str]:
+        """Предупреждения о частично невыполненных sandbox-операциях.
+
+        Пустой список — аккаунт подготовлен полностью.
+        """
+        return self._str_list("warnings")
 
 
 class CreatedChildAccount(Model):

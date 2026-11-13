@@ -58,3 +58,13 @@ class Contract(Model):
     @property
     def parent_id(self) -> Optional[int]:
         return self._int("parentId")
+
+    @property
+    def is_agent_acting_for_publisher(self) -> Optional[bool]:
+        """``isAgentActingForPublisher``; ``None``, если не задано."""
+        return self._bool("isAgentActingForPublisher")
+
+    @property
+    def is_creative_reporter(self) -> Optional[bool]:
+        """``isCreativeReporter``; ``None``, если не задано."""
+        return self._bool("isCreativeReporter")

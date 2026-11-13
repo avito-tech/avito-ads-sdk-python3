@@ -89,6 +89,10 @@ class CampaignsFilter(BaseFilter):
         return self
 
     def statuses(self, statuses: List[str]) -> "CampaignsFilter":
+        """Статусы (значения :class:`~avito_ads.enums.CampaignStatus`).
+
+        Значения передаются в API как есть, без проверки на клиенте.
+        """
         self._set("statuses", statuses)
         return self
 
@@ -129,6 +133,10 @@ class GroupsFilter(BaseFilter):
         return self
 
     def statuses(self, statuses: List[str]) -> "GroupsFilter":
+        """Статусы (значения :class:`~avito_ads.enums.GroupsStatus`).
+
+        Значения передаются в API как есть, без проверки на клиенте.
+        """
         self._set("statuses", statuses)
         return self
 
@@ -177,6 +185,10 @@ class CreativesFilter(BaseFilter):
         return self
 
     def statuses(self, statuses: List[str]) -> "CreativesFilter":
+        """Статусы (значения :class:`~avito_ads.enums.CreativesStatus`).
+
+        Значения передаются в API как есть, без проверки на клиенте.
+        """
         self._set("statuses", statuses)
         return self
 

@@ -15,6 +15,7 @@ from ..exceptions import (
     ApiError,
     AuthenticationError,
     BadRequestError,
+    ConflictError,
     NotFoundError,
     RateLimitError,
     ServerError,
@@ -110,6 +111,8 @@ def error_from_response(
         return AccessDeniedError(message, status_code, error_code, request, response)
     if status_code == 404:
         return NotFoundError(message, status_code, error_code, request, response)
+    if status_code == 409:
+        return ConflictError(message, status_code, error_code, request, response)
     if status_code == 429:
         return RateLimitError(
             message,

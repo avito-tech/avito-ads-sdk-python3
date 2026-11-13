@@ -12,6 +12,20 @@ Python SDK для API **Авито Реклама** (Avito Ads API).
 
 Библиотека закрывает все основные методы API: аккаунт и баланс, дочерние аккаунты и переводы средств, рекламодателей, договоры, кампании, группы объявлений, креативы, статистику и управление пользователями. Поддерживаются **два режима работы — синхронный и асинхронный** — с одинаковым набором методов. Транспорт построен на [httpx](https://www.python-httpx.org/), авторизация — OAuth2 `client_credentials` с автоматическим обновлением и кэшированием токена, а также повторными попытками при ошибках `429` и `5xx`.
 
+## Версия SDK и API
+
+Версия SDK = версия публичного API (swagger), под которую он собран. Текущая — **1.4.0**:
+
+```python
+import avito_ads
+
+print(avito_ads.__version__)   # "1.4.0" — версия пакета
+print(avito_ads.API_VERSION)   # "1.4.0" — версия swagger (info.version в openapi.json)
+```
+
+Спецификация лежит в корне репозитория (`openapi.json`); CI проверяет, что версия пакета,
+`API_VERSION` и `info.version` совпадают.
+
 ## Возможности
 
 - Поддержка **Python 3.8+**.
@@ -108,7 +122,7 @@ config = (
     .with_max_retries(4)             # макс. число повторов при 429/5xx
     .with_retry_base_delay(1000)     # базовая задержка повтора, мс
     .with_token_leeway(60)           # запас на досрочное обновление токена, сек
-    .with_user_agent("my-app/1.0")   # значение заголовка User-Agent
+    .with_user_agent("my-app/1.0")   # свой User-Agent; метка SDK дописывается
 )
 ```
 
@@ -122,6 +136,21 @@ config = config.with_http_client(httpx.Client(http2=True))
 # для асинхронного AsyncClient
 config = config.with_async_client(httpx.AsyncClient(http2=True))
 ```
+
+### User-Agent
+
+По умолчанию SDK отправляет `User-Agent: avito-ads-sdk-python3/<версия>` — и в запросах к API, и в
+запросе токена. По этой метке Авито видит, что запрос пришёл из Python SDK.
+
+Свой `User-Agent` не заменяет метку, а дополняется ею через пробел:
+
+```python
+config = config.with_user_agent("my-app/1.0")
+print(config.effective_user_agent)   # my-app/1.0 avito-ads-sdk-python3/1.4.0
+```
+
+Если в вашем значении метка `avito-ads-sdk-python3/` уже есть (без учёта регистра), второй раз она
+не дописывается.
 
 ### Окружения
 
@@ -248,6 +277,68 @@ client.groups.change_budget(group_id=555, budget=100000)
 client.groups.change_price(group_id=555, price=25)
 ```
 
+#### Причины статуса
+
+У кампании, группы и креатива есть `status_reasons` — все коды причин текущего статуса (`[]`, если
+причин нет) и `top_status_reason` — главная причина (`""`, если не определена). API может добавлять
+новые коды, поэтому обрабатывайте неизвестные значения:
+
+```python
+from avito_ads import CampaignStatus
+
+for campaign in client.campaigns.iterate():
+    if campaign.status == CampaignStatus.PAUSED and campaign.top_status_reason:
+        print(campaign.id, "на паузе:", campaign.top_status_reason, campaign.status_reasons)
+```
+
+Статусы, `budget_frequency` и другие значения перечислений модели возвращают **строкой как есть**:
+новое значение, появившееся в API, не вызывает ошибку. Перечисления из `avito_ads.enums` нужны для
+сравнения и для проверки входных значений.
+
+#### Бюджет кампании (может отсутствовать)
+
+`Campaign.budget` и `budget_kopeks` — сумма бюджетов групп, `Optional[int]`. Если в кампании есть
+группы и с дневным бюджетом, и с бюджетом на весь период (`budget_frequency == "mixed"`), бюджета
+нет и поле равно `None`; у пустой кампании — `0`. Не подменяйте `None` нулём:
+
+```python
+from avito_ads import CampaignBudgetFrequency
+
+if campaign.budget_kopeks is None:
+    print("Бюджет не суммируется:", campaign.budget_frequency)   # mixed
+else:
+    print("Бюджет:", campaign.budget_kopeks / 100, "₽")
+```
+
+Денежные поля в копейках есть также у баланса (`balance_kopeks`, `bonus_balance_kopeks`),
+статистики (`spend_kopeks`, `spend_bonus_kopeks`) и группы (`budget_kopeks`, `price_kopeks`).
+
+#### Частотные ограничения группы
+
+```python
+for group in client.groups.iterate():
+    for rule in group.frequency_rules:   # FrequencyRule: count показов за period
+        print(group.id, rule.count, rule.period)   # period: no_limit / day / week / month
+```
+
+`Group.frequency_count`/`frequency_period` оставлены для совместимости (соответствуют первому
+правилу) и помечены устаревшими: при чтении выдаётся `DeprecationWarning`. Так же помечен
+`Creative.legal_info` — используйте `Creative.kktu_fields`.
+
+#### Конфликт при изменении группы (409)
+
+Если группу изменили параллельно, `change_budget`/`change_price` бросают `ConflictError`
+(наследник `ApiError`). Перечитайте группу и повторите изменение:
+
+```python
+from avito_ads.exceptions import ConflictError
+
+try:
+    client.groups.change_budget(group_id=555, budget=100000)
+except ConflictError:
+    ...  # перечитать группу и повторить
+```
+
 ### Статистика
 
 Период не может превышать 100 дней; даты — в формате `YYYY-MM-DD`. Эти ограничения проверяются на стороне клиента.
@@ -313,13 +404,16 @@ from avito_ads.enums import CampaignStatus
 
 f = (
     CampaignsFilter()
-    .statuses([CampaignStatus.ACTIVE.value])
+    .statuses([CampaignStatus.ACTIVE.value, CampaignStatus.WILL_STOP_SOON.value])
     .contract_ids([10, 20])
     .created_at(DateRange("2025-01-01", "2025-01-31"))
 )
 
 campaigns = client.campaigns.list(f)
 ```
+
+Значения `statuses` передаются в API без проверки на клиенте — доступны все статусы swagger 1.4.0,
+включая `will_launch_soon`, `partially_active`, `will_stop_soon`, `pausing`, `unpausing`.
 
 Пустой фильтр корректно сериализуется в JSON-объект `{}`, как того требует API.
 
@@ -333,6 +427,7 @@ campaigns = client.campaigns.list(f)
 | 401 | `AuthenticationError` |
 | 403 | `AccessDeniedError` |
 | 404 | `NotFoundError` |
+| 409 | `ConflictError` (конфликт версий группы в `change_budget`/`change_price`) |
 | 429 | `RateLimitError` (атрибут `retry_after`) |
 | 5xx | `ServerError` |
 | сеть/таймаут | `NetworkError` |
@@ -435,6 +530,8 @@ async def balance(client: AsyncClient = Depends(avito)):
 Создание тестового аккаунта доступно только в песочнице:
 
 ```python
+from avito_ads.enums import LegalType
+
 config = Configuration.create(client_id, client_secret, account_id).sandbox()
 
 with Client(config) as client:
@@ -444,10 +541,17 @@ with Client(config) as client:
         long_name="Полное наименование",
         ogrn="1177746123456",
         legal_address="г. Москва, ул. Примерная, д. 1",
-        actual_address="г. Москва, ул. Примерная, д. 1",
+        actual_address=None,              # None — возьмётся юридический адрес
         contact={"name": "Иван Иванов", "phone": "+79001234567"},
+        legal_type=LegalType.UL,          # обязателен: "ul" или "ip"
     )
+    print(created.account_id)
+    for warning in created.warnings:     # ответ 207: аккаунт создан, но не всё подготовлено
+        print("Предупреждение:", warning)
 ```
+
+Ответ `207` считается успехом: аккаунт создан, а что не подготовилось — в `created.warnings`
+(пустой список — аккаунт подготовлен полностью).
 
 ## Разработка и тестирование
 

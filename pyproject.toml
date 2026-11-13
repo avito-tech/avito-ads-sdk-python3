@@ -4,7 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "avito-ads"
-version = "0.1.0"
+# Версия — единственный источник avito_ads/_version.py (см. [tool.setuptools.dynamic]).
+dynamic = ["version"]
 description = "Python SDK для публичного API кабинета Авито Реклама (Avito Ads). Синхронный и асинхронный режимы (httpx), Python 3.8+, интеграции с Django, Flask и FastAPI."
 readme = "README.md"
 requires-python = ">=3.8"
@@ -47,6 +48,9 @@ dev = [
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["avito_ads*"]
+
+[tool.setuptools.dynamic]
+version = { attr = "avito_ads._version.__version__" }
 
 [tool.setuptools.package-data]
 avito_ads = ["py.typed"]

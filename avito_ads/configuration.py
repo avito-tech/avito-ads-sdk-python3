@@ -14,6 +14,7 @@ from typing import Optional
 
 import httpx
 
+from ._version import DEFAULT_USER_AGENT, build_user_agent
 from .auth.credentials import Credentials
 from .auth.storage import AsyncTokenStorage, TokenStorage
 from .exceptions import ConfigurationError
@@ -38,7 +39,7 @@ class Configuration:
     max_retries: int = 4
     retry_base_delay_ms: int = 1000
     token_leeway: int = 60
-    user_agent: str = "avito-ads-python/0.1.0"
+    user_agent: str = DEFAULT_USER_AGENT
     logger: Optional[logging.Logger] = None
     token_storage: Optional[TokenStorage] = None
     async_token_storage: Optional[AsyncTokenStorage] = None
@@ -88,7 +89,13 @@ class Configuration:
         return replace(self, token_leeway=token_leeway)
 
     def with_user_agent(self, user_agent: str) -> "Configuration":
-        """Значение заголовка ``User-Agent``."""
+        """Свой ``User-Agent`` приложения.
+
+        Метка SDK не заменяется, а дописывается через пробел:
+        ``my-app/1.0`` превращается в ``my-app/1.0 avito-ads-sdk-python3/1.4.0``
+        (см. :attr:`effective_user_agent`). Если метка уже есть, второй раз она
+        не добавляется.
+        """
         return replace(self, user_agent=user_agent)
 
     def with_logger(self, logger: logging.Logger) -> "Configuration":
@@ -116,6 +123,11 @@ class Configuration:
     @property
     def credentials(self) -> Credentials:
         return Credentials(self.client_id, self.client_secret)
+
+    @property
+    def effective_user_agent(self) -> str:
+        """Итоговый заголовок ``User-Agent``: пользовательский + метка SDK."""
+        return build_user_agent(self.user_agent)
 
     @property
     def base_uri(self) -> str:

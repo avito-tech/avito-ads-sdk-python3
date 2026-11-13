@@ -48,12 +48,24 @@ class Account(Model):
 
 
 class Balance(Model):
-    """Баланс аккаунта (рубли и бонусы, целые числа)."""
+    """Баланс аккаунта: целые рубли и точные суммы в копейках."""
 
     @property
     def balance(self) -> int:
+        """Баланс в рублях."""
         return self._int("balance") or 0
 
     @property
     def bonus_balance(self) -> int:
+        """Бонусный баланс в рублях."""
         return self._int("bonusBalance") or 0
+
+    @property
+    def balance_kopeks(self) -> int:
+        """Баланс в копейках (``balanceKopeks``)."""
+        return self._int("balanceKopeks") or 0
+
+    @property
+    def bonus_balance_kopeks(self) -> int:
+        """Бонусный баланс в копейках (``bonusBalanceKopeks``)."""
+        return self._int("bonusBalanceKopeks") or 0
