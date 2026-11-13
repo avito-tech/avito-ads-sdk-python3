@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import warnings
 from typing import Any, Dict, List, Optional, Type, TypeVar
 
 M = TypeVar("M", bound="Model")
@@ -63,3 +64,26 @@ class Model:
     def _list(self, key: str) -> List[Any]:
         value = self._data.get(key)
         return value if isinstance(value, list) else []
+
+    def _str_list(self, key: str) -> List[str]:
+        """Список строк; ``null``/отсутствие — пустой список, ``None`` внутри пропускается."""
+        return [str(item) for item in self._list(key) if item is not None]
+
+    def _int_list(self, key: str) -> List[int]:
+        """Список целых; нечисловые элементы пропускаются."""
+        result: List[int] = []
+        for item in self._list(key):
+            try:
+                result.append(int(item))
+            except (TypeError, ValueError):
+                continue
+        return result
+
+    def _models(self, key: str, model: Type[M]) -> List[M]:
+        """Список вложенных объектов, обёрнутых в модель ``model``."""
+        return [model.from_dict(row) for row in self._list(key) if isinstance(row, dict)]
+
+
+def warn_deprecated(name: str, hint: str) -> None:
+    """Выдаёт ``DeprecationWarning`` при чтении устаревшего поля ответа."""
+    warnings.warn(f"{name} устарело: {hint}", DeprecationWarning, stacklevel=3)

@@ -11,7 +11,7 @@ from typing import Any, AsyncIterator, Dict, List, Optional, Union
 from .._core import operations as ops
 from .._core.operations import FilterType
 from ..contract_builder import ContractBuilder
-from ..enums import UserRole
+from ..enums import LegalType, UserRole
 from ..models import (
     Account,
     Advertiser,
@@ -25,8 +25,9 @@ from ..models import (
     CreatedChildAccount,
     CreatedContract,
     Creative,
-    EntityStatistic,
+    CreativeStatistic,
     Group,
+    GroupStatistic,
     User,
 )
 from ..pagination import DEFAULT_LIMIT, PaginatedResult, iterate_pages_async
@@ -59,12 +60,21 @@ class AsyncAccountResource(_AsyncResource):
         long_name: str,
         ogrn: str,
         legal_address: str,
-        actual_address: str,
+        actual_address: Optional[str],
         contact: Dict[str, Any],
         kpp: Optional[str] = None,
-        legal_type: Optional[str] = None,
+        legal_type: Union[str, LegalType, None] = None,
     ) -> CreatedAccount:
-        """Создаёт тестовый аккаунт (только в песочнице, ``POST /v1/account/{accountID}``)."""
+        """Создаёт тестовый аккаунт (только в песочнице, ``POST /v1/account/{accountID}``).
+
+        ``legal_type`` (``"ul"``/``"ip"``, :class:`~avito_ads.enums.LegalType`)
+        обязателен: без него бросается ``ValidationError`` до запроса. Значение по
+        умолчанию ``None`` оставлено только ради порядка аргументов.
+        ``actual_address`` можно передать ``None`` — API возьмёт ``legal_address``.
+
+        Ответы ``200`` и ``207`` (аккаунт создан, но часть sandbox-данных не
+        подготовилась) — успех; предупреждения — в ``CreatedAccount.warnings``.
+        """
         return await self._http.execute(
             ops.create_sandbox_account(
                 self._account_id,
@@ -234,11 +244,17 @@ class AsyncGroupResource(_AsyncResource):
         return iterate_pages_async(loader, request)
 
     async def change_budget(self, group_id: int, budget: int) -> None:
-        """Изменить бюджет группы (значение >= 1)."""
+        """Изменить бюджет группы (значение >= 1).
+
+        :raises ConflictError: 409 — группу изменили параллельно; перечитайте её и повторите.
+        """
         await self._http.execute(ops.change_group_budget(self._account_id, group_id, budget))
 
     async def change_price(self, group_id: int, price: int) -> None:
-        """Изменить ставку группы (значение >= 1)."""
+        """Изменить ставку группы (значение >= 1).
+
+        :raises ConflictError: 409 — группу изменили параллельно; перечитайте её и повторите.
+        """
         await self._http.execute(ops.change_group_price(self._account_id, group_id, price))
 
 
@@ -277,7 +293,7 @@ class AsyncStatisticsResource(_AsyncResource):
 
     async def groups(
         self, campaign_id: int, date_from: str, date_to: str, group_ids: List[int]
-    ) -> List[EntityStatistic]:
+    ) -> List[GroupStatistic]:
         """Статистика по группам кампании."""
         return await self._http.execute(
             ops.group_statistics(self._account_id, campaign_id, date_from, date_to, group_ids)
@@ -285,7 +301,7 @@ class AsyncStatisticsResource(_AsyncResource):
 
     async def creatives(
         self, campaign_id: int, date_from: str, date_to: str, creative_ids: List[int]
-    ) -> List[EntityStatistic]:
+    ) -> List[CreativeStatistic]:
         """Статистика по креативам кампании."""
         return await self._http.execute(
             ops.creative_statistics(

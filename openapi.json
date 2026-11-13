@@ -1,0 +1,6652 @@
+{
+  "components": {
+    "schemas": {
+      "Account": {
+        "properties": {
+          "actualAddress": {
+            "type": "string"
+          },
+          "contact": {
+            "description": "Контактное лицо",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "phone": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "phone"
+            ],
+            "type": "object"
+          },
+          "inn": {
+            "type": "string"
+          },
+          "kpp": {
+            "type": "string"
+          },
+          "legalAddress": {
+            "type": "string"
+          },
+          "longName": {
+            "type": "string"
+          },
+          "manager": {
+            "description": "MSD Менеджер",
+            "nullable": true,
+            "properties": {
+              "email": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "email"
+            ],
+            "type": "object"
+          },
+          "ogrn": {
+            "type": "string"
+          },
+          "shortName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "inn",
+          "shortName",
+          "longName",
+          "ogrn",
+          "kpp",
+          "legalAddress",
+          "actualAddress",
+          "contact"
+        ],
+        "type": "object"
+      },
+      "ActivityScheduleDay": {
+        "description": "Активные часы в сутках",
+        "items": {
+          "maximum": 23,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "type": "array"
+      },
+      "ActivityScheduleHours": {
+        "description": "Расписание активности на день по часам (0-23)",
+        "items": {
+          "type": "integer"
+        },
+        "type": "array"
+      },
+      "Advertiser": {
+        "properties": {
+          "accountId": {
+            "type": "integer"
+          },
+          "actualAddress": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer"
+          },
+          "inn": {
+            "type": "string"
+          },
+          "kpp": {
+            "type": "string"
+          },
+          "legalAddress": {
+            "type": "string"
+          },
+          "legalRole": {
+            "$ref": "#/components/schemas/LegalRole"
+          },
+          "legalType": {
+            "$ref": "#/components/schemas/LegalType"
+          },
+          "longName": {
+            "type": "string"
+          },
+          "ogrn": {
+            "type": "string"
+          },
+          "shortName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "shortName",
+          "longName",
+          "inn",
+          "legalRole",
+          "ogrn",
+          "legalAddress",
+          "actualAddress",
+          "accountId",
+          "legalType"
+        ],
+        "type": "object"
+      },
+      "AdvertiserFilter": {
+        "properties": {
+          "ids": {
+            "description": "Список ID рекламодателей",
+            "items": {
+              "type": "integer"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "inns": {
+            "description": "Список ИНН рекламодателей",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "roles": {
+            "description": "Список ролей рекламодателей",
+            "items": {
+              "$ref": "#/components/schemas/LegalRole"
+            },
+            "nullable": true,
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "AudienceType": {
+        "description": "Тип аудитории таргетинга группы",
+        "enum": [
+          "basic",
+          "ready",
+          "autotargeting"
+        ],
+        "type": "string"
+      },
+      "BannerFormat": {
+        "description": "Формат баннера",
+        "enum": [
+          "standard",
+          "premium",
+          "root",
+          "seller_profile"
+        ],
+        "type": "string"
+      },
+      "BudgetFrequency": {
+        "description": "Частота расходования бюджета",
+        "enum": [
+          "daily",
+          "entirePeriod"
+        ],
+        "type": "string"
+      },
+      "Campaign": {
+        "properties": {
+          "accountId": {
+            "description": "ID аккаунта",
+            "type": "integer"
+          },
+          "additionalAgreementID": {
+            "description": "ID дополнительного соглашения к изначальному договору",
+            "nullable": true,
+            "type": "integer"
+          },
+          "advertiserId": {
+            "description": "ID рекламодателя",
+            "type": "integer"
+          },
+          "budget": {
+            "description": "Сумма бюджетов групп в целых рублях с НДС. Для mixed отсутствует; для пустой кампании равна 0.",
+            "nullable": true,
+            "type": "integer"
+          },
+          "budgetFrequency": {
+            "$ref": "#/components/schemas/CampaignBudgetFrequency"
+          },
+          "budgetKopeks": {
+            "description": "Точная сумма бюджетов групп в копейках с НДС. Для mixed отсутствует; для пустой кампании равна 0.",
+            "nullable": true,
+            "type": "integer"
+          },
+          "campaignType": {
+            "$ref": "#/components/schemas/CampaignType"
+          },
+          "contractId": {
+            "description": "ID контракта",
+            "type": "integer"
+          },
+          "createdAt": {
+            "description": "Дата создания кампании",
+            "type": "string"
+          },
+          "endDate": {
+            "description": "Дата окончания кампании",
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "description": "ID кампании",
+            "type": "integer"
+          },
+          "managerID": {
+            "description": "ID менеджера, ответственного за кампанию (userID)",
+            "type": "integer"
+          },
+          "name": {
+            "description": "Название кампании",
+            "type": "string"
+          },
+          "paymentModel": {
+            "$ref": "#/components/schemas/CampaignPaymentModel"
+          },
+          "performanceAdditionalAgreementID": {
+            "description": "ID доп соглашения к исполнительскому договору",
+            "nullable": true,
+            "type": "integer"
+          },
+          "startDate": {
+            "description": "Дата начала кампании",
+            "nullable": true,
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/CampaignStatus"
+          },
+          "statusReasons": {
+            "$ref": "#/components/schemas/StatusReasons"
+          },
+          "topStatusReason": {
+            "$ref": "#/components/schemas/TopStatusReason"
+          },
+          "updatedAt": {
+            "description": "Дата обновления кампании",
+            "nullable": true,
+            "type": "string"
+          },
+          "userId": {
+            "description": "ID пользователя создавшего кампанию",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "statusReasons",
+          "topStatusReason"
+        ],
+        "type": "object"
+      },
+      "CampaignBudgetFrequency": {
+        "description": "Тип агрегата бюджета кампании; mixed — одновременно есть группы с дневным бюджетом и бюджетом на весь период",
+        "enum": [
+          "daily",
+          "entirePeriod",
+          "mixed"
+        ],
+        "type": "string"
+      },
+      "CampaignFieldName": {
+        "description": "Название поля кампании",
+        "enum": [
+          "name",
+          "advertiserID",
+          "contractID",
+          "additionalAgreementID",
+          "performanceAdditionalAgreementID",
+          "managerID",
+          "campaignType",
+          "paymentModel"
+        ],
+        "type": "string"
+      },
+      "CampaignGoalType": {
+        "description": "Цель кампании",
+        "enum": [
+          "performance",
+          "reach"
+        ],
+        "type": "string"
+      },
+      "CampaignLandingType": {
+        "description": "Тип посадочной страницы кампании",
+        "enum": [
+          "external"
+        ],
+        "type": "string"
+      },
+      "CampaignPaymentModel": {
+        "description": "Модель оплаты кампании",
+        "enum": [
+          "CPM",
+          "CPC"
+        ],
+        "type": "string"
+      },
+      "CampaignStatistic": {
+        "description": "Статистика кампании",
+        "properties": {
+          "campaignType": {
+            "$ref": "#/components/schemas/CampaignType"
+          },
+          "data": {
+            "description": "Статистика в разбивке по дням",
+            "items": {
+              "$ref": "#/components/schemas/StatsData"
+            },
+            "type": "array"
+          },
+          "id": {
+            "description": "ID кампании",
+            "type": "integer"
+          },
+          "name": {
+            "description": "Название кампании",
+            "type": "string"
+          },
+          "paymentModel": {
+            "$ref": "#/components/schemas/CampaignPaymentModel"
+          },
+          "totalData": {
+            "$ref": "#/components/schemas/StatsData"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "paymentModel",
+          "campaignType",
+          "data",
+          "totalData"
+        ],
+        "type": "object"
+      },
+      "CampaignStatus": {
+        "description": "Статус кампании",
+        "enum": [
+          "draft",
+          "in_moderation",
+          "moderation_failed",
+          "partial_moderation",
+          "active",
+          "will_launch_soon",
+          "partially_active",
+          "will_stop_soon",
+          "pausing",
+          "paused",
+          "unpausing",
+          "stopped",
+          "finished",
+          "archived"
+        ],
+        "type": "string"
+      },
+      "CampaignStrategy": {
+        "description": "Стратегия кампании",
+        "enum": [
+          "maxclicks",
+          "maxviews"
+        ],
+        "type": "string"
+      },
+      "CampaignType": {
+        "description": "Тип кампании",
+        "enum": [
+          "textImage",
+          "HTML",
+          "video"
+        ],
+        "type": "string"
+      },
+      "CampaignsFilter": {
+        "properties": {
+          "additionalAgreementIDs": {
+            "description": "Список ID дополнительных соглашений",
+            "items": {
+              "type": "integer"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "advertisers": {
+            "description": "Список ID рекламодателей",
+            "items": {
+              "type": "integer"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "campaignTypes": {
+            "description": "Список типов кампаний",
+            "items": {
+              "$ref": "#/components/schemas/CampaignType"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "contractIDs": {
+            "description": "Список ID договоров",
+            "items": {
+              "type": "integer"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/DateRange"
+          },
+          "ids": {
+            "description": "Список ID кампаний",
+            "items": {
+              "type": "integer"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "managers": {
+            "description": "Список ID менеджеров",
+            "items": {
+              "type": "integer"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "paymentModels": {
+            "description": "Список моделей оплаты",
+            "items": {
+              "$ref": "#/components/schemas/CampaignPaymentModel"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "statuses": {
+            "description": "Список статусов кампаний",
+            "items": {
+              "$ref": "#/components/schemas/CampaignStatus"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "timeFrame": {
+            "$ref": "#/components/schemas/DateRange"
+          }
+        },
+        "type": "object"
+      },
+      "Contract": {
+        "properties": {
+          "accountID": {
+            "type": "integer"
+          },
+          "cid": {
+            "nullable": true,
+            "type": "string"
+          },
+          "client": {
+            "$ref": "#/components/schemas/Advertiser"
+          },
+          "contractor": {
+            "$ref": "#/components/schemas/Advertiser"
+          },
+          "date": {
+            "nullable": true,
+            "type": "string"
+          },
+          "description": {
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "type": "integer"
+          },
+          "isAgentActingForPublisher": {
+            "nullable": true,
+            "type": "boolean"
+          },
+          "isCreativeReporter": {
+            "nullable": true,
+            "type": "boolean"
+          },
+          "number": {
+            "nullable": true,
+            "type": "string"
+          },
+          "object": {
+            "nullable": true,
+            "type": "string"
+          },
+          "parentId": {
+            "nullable": true,
+            "type": "integer"
+          },
+          "subject": {
+            "nullable": true,
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/ContractType"
+          }
+        },
+        "required": [
+          "id",
+          "accountID",
+          "client",
+          "contractor",
+          "type"
+        ],
+        "type": "object"
+      },
+      "ContractAction": {
+        "description": "Описание действия договора",
+        "enum": [
+          "distribution",
+          "conclude",
+          "commercial",
+          "other"
+        ],
+        "type": "string"
+      },
+      "ContractCounterpartyType": {
+        "enum": [
+          "direct_with_advertiser",
+          "advertiser_intermediary"
+        ],
+        "type": "string"
+      },
+      "ContractForChildAccount": {
+        "nullable": true,
+        "properties": {
+          "accountID": {
+            "type": "integer"
+          },
+          "cid": {
+            "nullable": true,
+            "type": "string"
+          },
+          "client": {
+            "$ref": "#/components/schemas/Advertiser"
+          },
+          "contractor": {
+            "$ref": "#/components/schemas/Advertiser"
+          },
+          "date": {
+            "nullable": true,
+            "type": "string"
+          },
+          "description": {
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "type": "integer"
+          },
+          "isAgentActingForPublisher": {
+            "nullable": true,
+            "type": "boolean"
+          },
+          "isCreativeReporter": {
+            "nullable": true,
+            "type": "boolean"
+          },
+          "number": {
+            "nullable": true,
+            "type": "string"
+          },
+          "object": {
+            "nullable": true,
+            "type": "string"
+          },
+          "parentId": {
+            "nullable": true,
+            "type": "integer"
+          },
+          "subject": {
+            "nullable": true,
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/ContractType"
+          }
+        },
+        "type": "object"
+      },
+      "ContractSubject": {
+        "description": "Предмет договора",
+        "enum": [
+          "org-distribution",
+          "mediation",
+          "distribution",
+          "representation",
+          "other"
+        ],
+        "type": "string"
+      },
+      "ContractType": {
+        "description": "Тип контракта",
+        "enum": [
+          "service",
+          "intermediary",
+          "external"
+        ],
+        "type": "string"
+      },
+      "ContractsFilter": {
+        "properties": {
+          "clients": {
+            "$ref": "#/components/schemas/AdvertiserFilter"
+          },
+          "contractors": {
+            "$ref": "#/components/schemas/AdvertiserFilter"
+          },
+          "ids": {
+            "description": "Список ID договоров",
+            "items": {
+              "type": "integer"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "numbers": {
+            "description": "Список номеров договоров",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "CreateCampaignPaymentModel": {
+        "description": "Модель оплаты кампании для создания",
+        "enum": [
+          "cpc",
+          "cpm"
+        ],
+        "type": "string"
+      },
+      "CreateCampaignType": {
+        "description": "Тип кампании для создания",
+        "enum": [
+          "textimg",
+          "html",
+          "video"
+        ],
+        "type": "string"
+      },
+      "CreateGroupActivitySchedule": {
+        "description": "Кастомное расписание активности",
+        "properties": {
+          "friday": {
+            "$ref": "#/components/schemas/ActivityScheduleDay"
+          },
+          "monday": {
+            "$ref": "#/components/schemas/ActivityScheduleDay"
+          },
+          "saturday": {
+            "$ref": "#/components/schemas/ActivityScheduleDay"
+          },
+          "sunday": {
+            "$ref": "#/components/schemas/ActivityScheduleDay"
+          },
+          "thursday": {
+            "$ref": "#/components/schemas/ActivityScheduleDay"
+          },
+          "tuesday": {
+            "$ref": "#/components/schemas/ActivityScheduleDay"
+          },
+          "wednesday": {
+            "$ref": "#/components/schemas/ActivityScheduleDay"
+          }
+        },
+        "type": "object"
+      },
+      "Creative": {
+        "properties": {
+          "accountID": {
+            "description": "ID аккаунта",
+            "type": "integer"
+          },
+          "advertiserID": {
+            "description": "ID рекламодателя",
+            "type": "integer"
+          },
+          "buttonText": {
+            "description": "Текст на кнопке",
+            "nullable": true,
+            "type": "string"
+          },
+          "campaignID": {
+            "description": "ID кампании",
+            "type": "integer"
+          },
+          "campaignType": {
+            "$ref": "#/components/schemas/CampaignType"
+          },
+          "description": {
+            "description": "Описание объявления",
+            "nullable": true,
+            "type": "string"
+          },
+          "groupID": {
+            "description": "ID группы",
+            "type": "integer"
+          },
+          "id": {
+            "description": "ID креатива",
+            "type": "integer"
+          },
+          "kktuFields": {
+            "description": "Заполненное поле динамической формы ККТУ",
+            "items": {
+              "$ref": "#/components/schemas/KKTUFieldValue"
+            },
+            "type": "array"
+          },
+          "landingID": {
+            "description": "ID посадочной страницы",
+            "nullable": true,
+            "type": "integer"
+          },
+          "legalInfo": {
+            "$ref": "#/components/schemas/LegalInfo"
+          },
+          "link": {
+            "description": "Целевая ссылка",
+            "type": "string"
+          },
+          "managerID": {
+            "description": "ID менеджера, ответственного за кампанию (userID)",
+            "type": "integer"
+          },
+          "name": {
+            "description": "Название креатива",
+            "type": "string"
+          },
+          "originUrl": {
+            "description": "Оригинальная ссылка для аналитики",
+            "nullable": true,
+            "type": "string"
+          },
+          "paymentModel": {
+            "$ref": "#/components/schemas/CampaignPaymentModel"
+          },
+          "previewUrl": {
+            "description": "Ссылка на предпросмотр креатива",
+            "nullable": true,
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/CreativesStatus"
+          },
+          "statusReasons": {
+            "$ref": "#/components/schemas/StatusReasons"
+          },
+          "title": {
+            "description": "Заголовок объявления",
+            "nullable": true,
+            "type": "string"
+          },
+          "topStatusReason": {
+            "$ref": "#/components/schemas/TopStatusReason"
+          },
+          "userID": {
+            "description": "ID пользователя, создавшего креатив",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "statusReasons",
+          "topStatusReason"
+        ],
+        "type": "object"
+      },
+      "CreativeStatistic": {
+        "description": "Статистика креатива",
+        "properties": {
+          "data": {
+            "description": "Статистика в разбивке по дням",
+            "items": {
+              "$ref": "#/components/schemas/StatsData"
+            },
+            "type": "array"
+          },
+          "groupId": {
+            "description": "ID группы, к которой относится креатив",
+            "type": "integer"
+          },
+          "id": {
+            "description": "ID креатива",
+            "type": "integer"
+          },
+          "name": {
+            "description": "Название креатива",
+            "type": "string"
+          },
+          "totalData": {
+            "$ref": "#/components/schemas/StatsData"
+          }
+        },
+        "required": [
+          "id",
+          "groupId",
+          "name",
+          "data",
+          "totalData"
+        ],
+        "type": "object"
+      },
+      "CreativesFilter": {
+        "properties": {
+          "advertisers": {
+            "description": "Список ID рекламодателей",
+            "items": {
+              "type": "integer"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "campaignIDs": {
+            "description": "Список ID кампаний",
+            "items": {
+              "type": "integer"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "campaignTypes": {
+            "description": "Список типов кампаний",
+            "items": {
+              "$ref": "#/components/schemas/CampaignType"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "groupIDs": {
+            "description": "Список ID групп",
+            "items": {
+              "type": "integer"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "ids": {
+            "description": "Список ID креативов",
+            "items": {
+              "type": "integer"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "managers": {
+            "description": "Список ID менеджеров",
+            "items": {
+              "type": "integer"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "paymentModels": {
+            "description": "Список моделей оплаты",
+            "items": {
+              "$ref": "#/components/schemas/CampaignPaymentModel"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "statuses": {
+            "description": "Список статусов креативов",
+            "items": {
+              "$ref": "#/components/schemas/CreativesStatus"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "timeFrame": {
+            "$ref": "#/components/schemas/DateRange"
+          }
+        },
+        "type": "object"
+      },
+      "CreativesStatus": {
+        "description": "Статус креатива",
+        "enum": [
+          "draft",
+          "ready_for_moderation",
+          "in_moderation",
+          "moderation_failed",
+          "erir_registration",
+          "will_launch_soon",
+          "active",
+          "pausing",
+          "paused",
+          "unpausing",
+          "stopped",
+          "finished",
+          "archived"
+        ],
+        "type": "string"
+      },
+      "CreteIntermediaryIn": {
+        "description": "Данные исполнителя по договору. Для доп соглашений не передаем. Для договоров обязательно передавать.",
+        "nullable": true,
+        "properties": {
+          "actualAddress": {
+            "description": "Почтовый адрес",
+            "type": "string"
+          },
+          "inn": {
+            "description": "ИНН ЮЛ/ИП",
+            "type": "string"
+          },
+          "kpp": {
+            "description": "КПП ЮЛ, для ИП не передаем",
+            "nullable": true,
+            "type": "string"
+          },
+          "legalAddress": {
+            "description": "Юридически адрес",
+            "type": "string"
+          },
+          "legalType": {
+            "$ref": "#/components/schemas/LegalType"
+          },
+          "longName": {
+            "description": "Полное имя ЮЛ/ИП",
+            "type": "string"
+          },
+          "ogrn": {
+            "description": "ОГРНИП для ИП, ОРГН для ЮЛ",
+            "type": "string"
+          },
+          "shortName": {
+            "description": "Короткое имя ЮЛ/ИП",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "DateRange": {
+        "description": "Диапазон дат",
+        "nullable": true,
+        "properties": {
+          "from": {
+            "description": "Дата начала в формате YYYY-MM-DD",
+            "format": "date",
+            "type": "string"
+          },
+          "to": {
+            "description": "Дата окончания в формате YYYY-MM-DD",
+            "format": "date",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "DetailedError": {
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "errors": {
+            "$ref": "#/components/schemas/DetailedErrors"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "message",
+          "code"
+        ],
+        "type": "object"
+      },
+      "DetailedErrorItem": {
+        "properties": {
+          "id": {
+            "description": "ID сущности",
+            "format": "int64",
+            "type": "integer"
+          },
+          "message": {
+            "description": "Описание ошибки",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "message"
+        ],
+        "type": "object"
+      },
+      "DetailedErrors": {
+        "description": "Ошибки по ID сущности",
+        "items": {
+          "$ref": "#/components/schemas/DetailedErrorItem"
+        },
+        "type": "array"
+      },
+      "Disclaimer": {
+        "properties": {
+          "inputs": {
+            "items": {
+              "$ref": "#/components/schemas/DisclaimerInput"
+            },
+            "type": "array"
+          },
+          "key": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "title",
+          "inputs"
+        ],
+        "type": "object"
+      },
+      "DisclaimerInput": {
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string"
+          },
+          "valueType": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "description",
+          "valueType"
+        ],
+        "type": "object"
+      },
+      "EmptyResponse": {
+        "type": "object"
+      },
+      "EnumObject": {
+        "properties": {
+          "children": {
+            "items": {
+              "$ref": "#/components/schemas/EnumObject"
+            },
+            "type": "array"
+          },
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "value"
+        ],
+        "type": "object"
+      },
+      "Error": {
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "message",
+          "code"
+        ],
+        "type": "object"
+      },
+      "FrequencyPeriod": {
+        "description": "Период частотного ограничения",
+        "enum": [
+          "no_limit",
+          "day",
+          "week",
+          "month"
+        ],
+        "type": "string"
+      },
+      "FrequencyRule": {
+        "description": "Правило частотного ограничения",
+        "properties": {
+          "count": {
+            "description": "Количество показов за указанный период",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "period": {
+            "$ref": "#/components/schemas/FrequencyPeriod"
+          }
+        },
+        "required": [
+          "count",
+          "period"
+        ],
+        "type": "object"
+      },
+      "Group": {
+        "properties": {
+          "accountID": {
+            "description": "ID аккаунта",
+            "type": "integer"
+          },
+          "actions": {
+            "description": "Доступные действия с группой",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "activitySchedule": {
+            "description": "Расписание активности по дням",
+            "properties": {
+              "friday": {
+                "$ref": "#/components/schemas/ActivityScheduleHours"
+              },
+              "monday": {
+                "$ref": "#/components/schemas/ActivityScheduleHours"
+              },
+              "saturday": {
+                "$ref": "#/components/schemas/ActivityScheduleHours"
+              },
+              "sunday": {
+                "$ref": "#/components/schemas/ActivityScheduleHours"
+              },
+              "thursday": {
+                "$ref": "#/components/schemas/ActivityScheduleHours"
+              },
+              "tuesday": {
+                "$ref": "#/components/schemas/ActivityScheduleHours"
+              },
+              "wednesday": {
+                "$ref": "#/components/schemas/ActivityScheduleHours"
+              }
+            },
+            "type": "object"
+          },
+          "advertiserID": {
+            "description": "ID рекламодателя",
+            "type": "integer"
+          },
+          "audienceType": {
+            "$ref": "#/components/schemas/AudienceType"
+          },
+          "budget": {
+            "description": "Бюджет группы в рублях с НДС",
+            "type": "integer"
+          },
+          "budgetFrequency": {
+            "$ref": "#/components/schemas/BudgetFrequency"
+          },
+          "budgetKopeks": {
+            "description": "Бюджет группы в копейках с НДС",
+            "type": "integer"
+          },
+          "campaignID": {
+            "description": "ID кампании",
+            "type": "integer"
+          },
+          "campaignType": {
+            "$ref": "#/components/schemas/CampaignType"
+          },
+          "createdAt": {
+            "description": "Дата создания группы",
+            "format": "date-time",
+            "type": "string"
+          },
+          "format": {
+            "$ref": "#/components/schemas/GroupFormat"
+          },
+          "frequencyCount": {
+            "description": "Частота показов в рамках периода",
+            "type": "integer"
+          },
+          "frequencyPeriod": {
+            "$ref": "#/components/schemas/FrequencyPeriod"
+          },
+          "frequencyRules": {
+            "description": "Правила частотного ограничения",
+            "items": {
+              "$ref": "#/components/schemas/FrequencyRule"
+            },
+            "type": "array"
+          },
+          "haveCreative": {
+            "description": "Есть ли в группе креатив",
+            "nullable": true,
+            "type": "boolean"
+          },
+          "id": {
+            "description": "ID группы",
+            "type": "integer"
+          },
+          "managerID": {
+            "description": "ID менеджера, ответственного за кампанию (userID)",
+            "type": "integer"
+          },
+          "name": {
+            "description": "Название группы",
+            "type": "string"
+          },
+          "pace": {
+            "$ref": "#/components/schemas/Paces"
+          },
+          "paymentModel": {
+            "$ref": "#/components/schemas/CampaignPaymentModel"
+          },
+          "periodEndAt": {
+            "description": "Конец периода кампании",
+            "format": "date-time",
+            "nullable": true,
+            "type": "string"
+          },
+          "periodStartAt": {
+            "description": "Начало периода кампании",
+            "format": "date-time",
+            "nullable": true,
+            "type": "string"
+          },
+          "periodTimezone": {
+            "description": "Таймзона периода показов",
+            "type": "string"
+          },
+          "price": {
+            "description": "Цена в рублях с НДС",
+            "type": "integer"
+          },
+          "priceControl": {
+            "$ref": "#/components/schemas/GroupPriceControl"
+          },
+          "priceKopeks": {
+            "description": "Цена в копейках с НДС",
+            "type": "integer"
+          },
+          "scheduleType": {
+            "$ref": "#/components/schemas/ScheduleType"
+          },
+          "startASAP": {
+            "description": "Запускать как можно скорее",
+            "type": "boolean"
+          },
+          "status": {
+            "$ref": "#/components/schemas/GroupsStatus"
+          },
+          "statusReasons": {
+            "$ref": "#/components/schemas/StatusReasons"
+          },
+          "targetingAgeIDs": {
+            "description": "ID возрастных сегментов",
+            "items": {
+              "type": "integer"
+            },
+            "type": "array"
+          },
+          "targetingAudienceIDs": {
+            "description": "ID аудиторий",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "targetingFamilyStatusIDs": {
+            "description": "ID семейного статуса",
+            "items": {
+              "type": "integer"
+            },
+            "type": "array"
+          },
+          "targetingGenderIDs": {
+            "description": "ID пола",
+            "items": {
+              "type": "integer"
+            },
+            "type": "array"
+          },
+          "targetingIncomeIDs": {
+            "description": "ID доходных сегментов",
+            "items": {
+              "type": "integer"
+            },
+            "type": "array"
+          },
+          "targetingInterestIDs": {
+            "description": "ID интересов",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "targetingLocationIDs": {
+            "description": "ID локаций",
+            "items": {
+              "type": "integer"
+            },
+            "type": "array"
+          },
+          "targetingParentStatusIDs": {
+            "description": "ID родительского статуса",
+            "items": {
+              "type": "integer"
+            },
+            "type": "array"
+          },
+          "topStatusReason": {
+            "$ref": "#/components/schemas/TopStatusReason"
+          },
+          "updatedAt": {
+            "description": "Дата обновления группы",
+            "format": "date-time",
+            "type": "string"
+          },
+          "userID": {
+            "description": "ID пользователя, создавшего группу",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "statusReasons",
+          "topStatusReason",
+          "startASAP",
+          "frequencyCount",
+          "frequencyRules"
+        ],
+        "type": "object"
+      },
+      "GroupFormat": {
+        "description": "Формат группы объявлений",
+        "enum": [
+          "mediaRoot",
+          "mediaSellerProfile",
+          "mediaPremium",
+          "media",
+          "native",
+          "htmlPremium",
+          "html",
+          "video"
+        ],
+        "type": "string"
+      },
+      "GroupPriceControl": {
+        "description": "Контроль цены группы",
+        "enum": [
+          "manual",
+          "auto"
+        ],
+        "type": "string"
+      },
+      "GroupReferenceData": {
+        "properties": {
+          "bannerFormat": {
+            "items": {
+              "$ref": "#/components/schemas/EnumObject"
+            },
+            "type": "array"
+          },
+          "budgetThresholds": {
+            "items": {
+              "$ref": "#/components/schemas/ThresholdItem"
+            },
+            "type": "array"
+          },
+          "priceThresholds": {
+            "items": {
+              "$ref": "#/components/schemas/ThresholdItem"
+            },
+            "type": "array"
+          },
+          "targetingAgeIDs": {
+            "items": {
+              "$ref": "#/components/schemas/IdNameObject"
+            },
+            "type": "array"
+          },
+          "targetingAudienceIDs": {
+            "items": {
+              "$ref": "#/components/schemas/StringIdNameObject"
+            },
+            "type": "array"
+          },
+          "targetingFamilyStatusIDs": {
+            "items": {
+              "$ref": "#/components/schemas/IdNameObject"
+            },
+            "type": "array"
+          },
+          "targetingGenderIDs": {
+            "items": {
+              "$ref": "#/components/schemas/IdNameObject"
+            },
+            "type": "array"
+          },
+          "targetingIncomeIDs": {
+            "items": {
+              "$ref": "#/components/schemas/IdNameObject"
+            },
+            "type": "array"
+          },
+          "targetingInterestIDs": {
+            "items": {
+              "$ref": "#/components/schemas/EnumObject"
+            },
+            "type": "array"
+          },
+          "targetingLocationIDs": {
+            "items": {
+              "$ref": "#/components/schemas/IdNameObject"
+            },
+            "type": "array"
+          },
+          "targetingParentStatusIDs": {
+            "items": {
+              "$ref": "#/components/schemas/IdNameObject"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "bannerFormat",
+          "priceThresholds",
+          "budgetThresholds",
+          "targetingLocationIDs",
+          "targetingInterestIDs",
+          "targetingAgeIDs",
+          "targetingGenderIDs",
+          "targetingIncomeIDs",
+          "targetingAudienceIDs",
+          "targetingFamilyStatusIDs",
+          "targetingParentStatusIDs"
+        ],
+        "type": "object"
+      },
+      "GroupStatistic": {
+        "description": "Статистика группы",
+        "properties": {
+          "data": {
+            "description": "Статистика в разбивке по дням",
+            "items": {
+              "$ref": "#/components/schemas/StatsData"
+            },
+            "type": "array"
+          },
+          "id": {
+            "description": "ID группы",
+            "type": "integer"
+          },
+          "name": {
+            "description": "Название группы",
+            "type": "string"
+          },
+          "totalData": {
+            "$ref": "#/components/schemas/StatsData"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "data",
+          "totalData"
+        ],
+        "type": "object"
+      },
+      "GroupsFilter": {
+        "properties": {
+          "advertisers": {
+            "description": "Список ID рекламодателей",
+            "items": {
+              "type": "integer"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "campaignIDs": {
+            "description": "Список ID кампаний",
+            "items": {
+              "type": "integer"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "ids": {
+            "description": "Список ID групп",
+            "items": {
+              "type": "integer"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "managers": {
+            "description": "Список ID менеджеров",
+            "items": {
+              "type": "integer"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "paces": {
+            "description": "Скорости показов",
+            "items": {
+              "$ref": "#/components/schemas/Paces"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "paymentModels": {
+            "description": "Список моделей оплаты",
+            "items": {
+              "$ref": "#/components/schemas/CampaignPaymentModel"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "statuses": {
+            "description": "Список статусов групп",
+            "items": {
+              "$ref": "#/components/schemas/GroupsStatus"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "timeFrame": {
+            "$ref": "#/components/schemas/DateRange"
+          }
+        },
+        "type": "object"
+      },
+      "GroupsStatus": {
+        "description": "Статус группы объявлений",
+        "enum": [
+          "draft",
+          "in_moderation",
+          "moderation_failed",
+          "will_launch_soon",
+          "active",
+          "will_stop_soon",
+          "pausing",
+          "paused",
+          "unpausing",
+          "stopped",
+          "finished",
+          "archived"
+        ],
+        "type": "string"
+      },
+      "IdNameObject": {
+        "properties": {
+          "children": {
+            "items": {
+              "$ref": "#/components/schemas/IdNameObject"
+            },
+            "type": "array"
+          },
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object"
+      },
+      "KKTUFieldValue": {
+        "properties": {
+          "key": {
+            "description": "Внутренний ключ поля",
+            "type": "string"
+          },
+          "value": {
+            "description": "Значение поля, приведённое к строке",
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "value"
+        ],
+        "type": "object"
+      },
+      "KktuItem": {
+        "properties": {
+          "category": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "level": {
+            "type": "integer"
+          },
+          "subCategory": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "title",
+          "level",
+          "subCategory",
+          "category"
+        ],
+        "type": "object"
+      },
+      "LegalInfo": {
+        "deprecated": true,
+        "description": "Устаревшее представление юридических данных. Используйте kktuFields.",
+        "properties": {
+          "ageRestriction": {
+            "description": "Возрастное ограничение",
+            "nullable": true,
+            "type": "integer"
+          },
+          "description": {
+            "description": "Юридическое описание",
+            "nullable": true,
+            "type": "string"
+          },
+          "kktu": {
+            "description": "ККТУ",
+            "type": "string"
+          },
+          "notes": {
+            "description": "Примечания",
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "LegalRole": {
+        "description": "Роль ЮЛ",
+        "enum": [
+          "rd",
+          "ra",
+          "rr"
+        ],
+        "type": "string"
+      },
+      "LegalType": {
+        "description": "Тип ЮЛ",
+        "enum": [
+          "ul",
+          "ip"
+        ],
+        "type": "string"
+      },
+      "ObjectSize": {
+        "properties": {
+          "height": {
+            "type": "integer"
+          },
+          "width": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "width",
+          "height"
+        ],
+        "type": "object"
+      },
+      "Paces": {
+        "description": "Скорости показов",
+        "enum": [
+          "asap",
+          "even"
+        ],
+        "type": "string"
+      },
+      "PeriodTimezone": {
+        "description": "Таймзона периода показов",
+        "enum": [
+          "Europe/Kaliningrad",
+          "Europe/Moscow",
+          "Europe/Samara",
+          "Asia/Yekaterinburg",
+          "Asia/Omsk",
+          "Asia/Krasnoyarsk",
+          "Asia/Irkutsk",
+          "Asia/Yakutsk",
+          "Asia/Vladivostok",
+          "Asia/Magadan",
+          "Asia/Kamchatka"
+        ],
+        "type": "string"
+      },
+      "ScheduleType": {
+        "description": "Тип расписания показов",
+        "enum": [
+          "always",
+          "weekdays9To20",
+          "custom"
+        ],
+        "type": "string"
+      },
+      "ShortAccount": {
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "shortName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "shortName"
+        ],
+        "type": "object"
+      },
+      "ShortAccountWithBalance": {
+        "properties": {
+          "account": {
+            "$ref": "#/components/schemas/ShortAccount"
+          },
+          "balance": {
+            "$ref": "#/components/schemas/V1GetAccountBalanceByIdOut"
+          }
+        },
+        "required": [
+          "account",
+          "balance"
+        ],
+        "type": "object"
+      },
+      "ShortAccountWithContract": {
+        "properties": {
+          "account": {
+            "$ref": "#/components/schemas/ShortAccount"
+          },
+          "contract": {
+            "$ref": "#/components/schemas/ContractForChildAccount"
+          }
+        },
+        "required": [
+          "account"
+        ],
+        "type": "object"
+      },
+      "StatsData": {
+        "description": "Данные статистики за период",
+        "properties": {
+          "clicks": {
+            "description": "Количество кликов",
+            "type": "integer"
+          },
+          "cpc": {
+            "description": "Средняя стоимость CPC",
+            "format": "float",
+            "type": "number"
+          },
+          "cpm": {
+            "description": "Средняя стоимость CPM",
+            "format": "float",
+            "type": "number"
+          },
+          "ctr": {
+            "description": "CTR (Click-Through Rate)",
+            "format": "float",
+            "type": "number"
+          },
+          "q25": {
+            "description": "Доля просмотров видео на 25%",
+            "format": "float",
+            "nullable": true,
+            "type": "number"
+          },
+          "q50": {
+            "description": "Доля просмотров видео на 50%",
+            "format": "float",
+            "nullable": true,
+            "type": "number"
+          },
+          "q75": {
+            "description": "Доля просмотров видео на 75%",
+            "format": "float",
+            "nullable": true,
+            "type": "number"
+          },
+          "spend": {
+            "description": "Потрачено денег в рублях",
+            "type": "integer"
+          },
+          "spendBonus": {
+            "description": "Потрачено бонусов в рублях",
+            "type": "integer"
+          },
+          "spendBonusKopeks": {
+            "description": "Потрачено бонусов в копейках",
+            "type": "integer"
+          },
+          "spendKopeks": {
+            "description": "Потрачено денег в копейках",
+            "type": "integer"
+          },
+          "timestamp": {
+            "description": "Временная метка (гранулярность по дням). Заполняется в data[] и отсутствует в totalData.",
+            "format": "date-time",
+            "nullable": true,
+            "type": "string"
+          },
+          "videoViews100": {
+            "description": "Количество просмотров видео на 100%",
+            "nullable": true,
+            "type": "integer"
+          },
+          "videoViews25": {
+            "description": "Количество просмотров видео на 25%",
+            "nullable": true,
+            "type": "integer"
+          },
+          "videoViews50": {
+            "description": "Количество просмотров видео на 50%",
+            "nullable": true,
+            "type": "integer"
+          },
+          "videoViews75": {
+            "description": "Количество просмотров видео на 75%",
+            "nullable": true,
+            "type": "integer"
+          },
+          "views": {
+            "description": "Количество показов",
+            "type": "integer"
+          },
+          "vtr": {
+            "description": "Доля просмотров видео на 100%",
+            "format": "float",
+            "nullable": true,
+            "type": "number"
+          }
+        },
+        "required": [
+          "views",
+          "clicks",
+          "ctr",
+          "spend",
+          "spendBonus",
+          "cpm",
+          "cpc"
+        ],
+        "type": "object"
+      },
+      "StatusReasons": {
+        "description": "Все коды причин текущего статуса. При отсутствии причин возвращается []. Порядок не отражает приоритет; главная причина передаётся в topStatusReason. Возможны новые коды причин.",
+        "example": [
+          "manual",
+          "insufficient_funds"
+        ],
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "StringIdNameObject": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object"
+      },
+      "TemplateData": {
+        "properties": {
+          "fields": {
+            "items": {
+              "$ref": "#/components/schemas/TemplateField"
+            },
+            "type": "array"
+          },
+          "isOptional": {
+            "type": "boolean"
+          },
+          "logoRatio": {
+            "items": {
+              "$ref": "#/components/schemas/ObjectSize"
+            },
+            "type": "array"
+          },
+          "mediaRatio": {
+            "$ref": "#/components/schemas/ObjectSize"
+          },
+          "platforms": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "templateID": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "templateID",
+          "platforms",
+          "mediaRatio",
+          "logoRatio",
+          "fields",
+          "isOptional"
+        ],
+        "type": "object"
+      },
+      "TemplateField": {
+        "properties": {
+          "canOverride": {
+            "nullable": true,
+            "type": "boolean"
+          },
+          "defaultValue": {
+            "nullable": true,
+            "type": "string"
+          },
+          "fieldType": {
+            "type": "string"
+          },
+          "isRequired": {
+            "nullable": true,
+            "type": "boolean"
+          },
+          "key": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "fieldType",
+          "key"
+        ],
+        "type": "object"
+      },
+      "ThresholdItem": {
+        "properties": {
+          "groupFormat": {
+            "$ref": "#/components/schemas/GroupFormat"
+          },
+          "value": {
+            "description": "Минимальное значение в рублях",
+            "type": "integer"
+          },
+          "valueKopeks": {
+            "description": "Минимальное значение в копейках",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "groupFormat",
+          "value",
+          "valueKopeks"
+        ],
+        "type": "object"
+      },
+      "TopStatusReason": {
+        "description": "Главная причина текущего статуса, определённая API. Если главная причина не определена, возвращается пустая строка, даже если statusReasons не пуст. Возможны новые коды причин.",
+        "example": "insufficient_funds",
+        "type": "string"
+      },
+      "User": {
+        "properties": {
+          "hasLoggedIn": {
+            "description": "Флаг, показывающий, заходил ли пользователь в аккаунт",
+            "type": "boolean"
+          },
+          "id": {
+            "description": "ID пользователя",
+            "type": "integer"
+          },
+          "role": {
+            "$ref": "#/components/schemas/UserRole"
+          }
+        },
+        "required": [
+          "id",
+          "role",
+          "hasLoggedIn"
+        ],
+        "type": "object"
+      },
+      "UserRole": {
+        "description": "Роль пользователя в рекламном кабинете",
+        "enum": [
+          "admin",
+          "viewer"
+        ],
+        "type": "string"
+      },
+      "V1AddUserIn": {
+        "description": "Payload добавления пользователя в аккаунт",
+        "properties": {
+          "role": {
+            "$ref": "#/components/schemas/UserRole"
+          },
+          "userId": {
+            "description": "ID пользователя авито",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "userId",
+          "role"
+        ],
+        "type": "object"
+      },
+      "V1ChangeBudgetIn": {
+        "description": "Payload для изменения бюджета группы",
+        "properties": {
+          "budget": {
+            "description": "Новый бюджет группы в рублях с НДС",
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "budget"
+        ],
+        "type": "object"
+      },
+      "V1ChangePriceIn": {
+        "description": "Payload для изменения ставки группы",
+        "properties": {
+          "price": {
+            "description": "Новая ставка группы в рублях с НДС",
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "price"
+        ],
+        "type": "object"
+      },
+      "V1CopyCampaignGroup": {
+        "description": "Группа и список креативов для копирования",
+        "properties": {
+          "creativeIDs": {
+            "description": "Список ID копируемых креативов. Если не передано или передано пустым списком, копируется только группа",
+            "items": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "type": "array"
+          },
+          "groupID": {
+            "description": "ID копируемой группы",
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "groupID"
+        ],
+        "type": "object"
+      },
+      "V1CopyCampaignIn": {
+        "description": "Payload копирования кампании аккаунта",
+        "properties": {
+          "campaignID": {
+            "description": "ID копируемой кампании",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "groups": {
+            "description": "Группы и креативы, которые нужно скопировать вместе с кампанией. Если не передано или передано пустым списком, копируется только кампания",
+            "items": {
+              "$ref": "#/components/schemas/V1CopyCampaignGroup"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "campaignID"
+        ],
+        "type": "object"
+      },
+      "V1CopyCampaignOut": {
+        "properties": {
+          "campaignID": {
+            "description": "ID новой кампании",
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "campaignID"
+        ],
+        "type": "object"
+      },
+      "V1CopyCreativeIn": {
+        "description": "Payload копирования креатива аккаунта",
+        "properties": {
+          "creativeID": {
+            "description": "ID копируемого креатива",
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "creativeID"
+        ],
+        "type": "object"
+      },
+      "V1CopyCreativeOut": {
+        "properties": {
+          "creativeID": {
+            "description": "ID нового креатива",
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "creativeID"
+        ],
+        "type": "object"
+      },
+      "V1CopyGroupIn": {
+        "description": "Payload копирования группы аккаунта",
+        "properties": {
+          "creativeIDs": {
+            "description": "Список ID креативов, которые нужно скопировать вместе с группой. Если не передано или передано пустым списком, копируется только группа",
+            "items": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "type": "array"
+          },
+          "groupID": {
+            "description": "ID копируемой группы",
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "groupID"
+        ],
+        "type": "object"
+      },
+      "V1CopyGroupOut": {
+        "properties": {
+          "newGroupID": {
+            "description": "ID новой группы",
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "newGroupID"
+        ],
+        "type": "object"
+      },
+      "V1CreateAccountIn": {
+        "description": "Payload создания аккаунта",
+        "properties": {
+          "actualAddress": {
+            "description": "Фактический адрес. Если не передан, используется legalAddress.",
+            "nullable": true,
+            "type": "string"
+          },
+          "contact": {
+            "description": "Контактное лицо",
+            "properties": {
+              "name": {
+                "description": "ФИО контактного лица",
+                "type": "string"
+              },
+              "phone": {
+                "description": "Контактный телефон",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "phone"
+            ],
+            "type": "object"
+          },
+          "inn": {
+            "description": "ИНН организации или ИП",
+            "type": "string"
+          },
+          "kpp": {
+            "description": "КПП организации",
+            "nullable": true,
+            "type": "string"
+          },
+          "legalAddress": {
+            "description": "Юридический адрес или адрес регистрации",
+            "type": "string"
+          },
+          "legalType": {
+            "$ref": "#/components/schemas/LegalType"
+          },
+          "longName": {
+            "description": "Полное наименование организации или ИП",
+            "type": "string"
+          },
+          "ogrn": {
+            "description": "ОГРН или ОГРНИП",
+            "type": "string"
+          },
+          "shortName": {
+            "description": "Краткое название аккаунта",
+            "type": "string"
+          }
+        },
+        "required": [
+          "inn",
+          "shortName",
+          "longName",
+          "ogrn",
+          "legalAddress",
+          "legalType",
+          "contact"
+        ],
+        "type": "object"
+      },
+      "V1CreateAccountOut": {
+        "properties": {
+          "accountID": {
+            "type": "integer"
+          },
+          "warnings": {
+            "description": "Предупреждения о частично невыполненных sandbox-операциях. Если массив пустой, аккаунт подготовлен полностью.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "accountID",
+          "warnings"
+        ],
+        "type": "object"
+      },
+      "V1CreateAdvertiserIn": {
+        "description": "Payload создания рекламодателя",
+        "properties": {
+          "actualAddress": {
+            "description": "Фактический адрес. Если не передан, используется legalAddress. Пример корректного адреса: 127015, г. Москва, ул. Лесная, д. 7",
+            "nullable": true,
+            "type": "string"
+          },
+          "inn": {
+            "description": "ИНН организации",
+            "type": "string"
+          },
+          "kpp": {
+            "description": "КПП организации",
+            "nullable": true,
+            "type": "string"
+          },
+          "legalAddress": {
+            "description": "Юридический адрес или адрес регистрации. Пример корректного адреса: 127015, г. Москва, ул. Лесная, д. 7",
+            "type": "string"
+          },
+          "legalRole": {
+            "$ref": "#/components/schemas/LegalRole"
+          },
+          "legalType": {
+            "$ref": "#/components/schemas/LegalType"
+          },
+          "longName": {
+            "description": "Полное наименование организации или ИП",
+            "type": "string"
+          },
+          "ogrn": {
+            "description": "ОГРН или ОГРНИП",
+            "type": "string"
+          },
+          "shortName": {
+            "description": "Краткое наименование организации или ИП",
+            "type": "string"
+          }
+        },
+        "required": [
+          "inn",
+          "shortName",
+          "longName",
+          "ogrn",
+          "legalAddress",
+          "legalRole",
+          "legalType"
+        ],
+        "type": "object"
+      },
+      "V1CreateAdvertiserOut": {
+        "properties": {
+          "id": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "type": "object"
+      },
+      "V1CreateCampaignIn": {
+        "description": "Payload запроса на создание кампании",
+        "properties": {
+          "additionalAgreementID": {
+            "description": "ID дополнительного соглашения",
+            "nullable": true,
+            "type": "integer"
+          },
+          "advertiserID": {
+            "description": "ID рекламодателя. Может быть null, если для аккаунта включен флаг sSelfAdvertisingEnabled=true (используется 1 кейс)",
+            "nullable": true,
+            "type": "integer"
+          },
+          "campaignGoals": {
+            "description": "Цели кампании. Пока поддерживается только пустой массив",
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 0,
+            "type": "array"
+          },
+          "campaignStrategy": {
+            "$ref": "#/components/schemas/CampaignStrategy"
+          },
+          "campaignType": {
+            "$ref": "#/components/schemas/CreateCampaignType"
+          },
+          "contractID": {
+            "description": "ID договора. Может быть null, если advertiserID=null. Если advertiserID задан, поле обязательно и принимает контракт 2 или 3 кейса",
+            "nullable": true,
+            "type": "integer"
+          },
+          "goalType": {
+            "$ref": "#/components/schemas/CampaignGoalType"
+          },
+          "landingPage": {
+            "description": "Посадочная страница. Пока поле не сохраняется",
+            "nullable": true,
+            "type": "string"
+          },
+          "landingType": {
+            "$ref": "#/components/schemas/CampaignLandingType"
+          },
+          "managerID": {
+            "description": "ID менеджера, ответственного за кампанию (userID)",
+            "type": "integer"
+          },
+          "name": {
+            "description": "Название кампании",
+            "type": "string"
+          },
+          "paymentModel": {
+            "$ref": "#/components/schemas/CreateCampaignPaymentModel"
+          }
+        },
+        "required": [
+          "name",
+          "goalType",
+          "campaignType",
+          "paymentModel",
+          "campaignStrategy",
+          "campaignGoals",
+          "managerID",
+          "landingType"
+        ],
+        "type": "object"
+      },
+      "V1CreateCampaignOut": {
+        "properties": {
+          "id": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "type": "object"
+      },
+      "V1CreateContractIn": {
+        "description": "Payload запроса на создание договора.\nБазово обязательны `description`, `advertiserId`, `type`.\nДля `type = service` дополнительно передаются `subject`, `isReportingRequired`, `date`, `number`; `cid` не передаётся.\nДля `type = intermediary` дополнительно передаются `subject`, `object`, `isReportingRequired`, `isFundsAllocationToPrincipal`, `date`, `number`; `cid` не передаётся.\nДля `type = external` передаётся `cid`; `parentId` не передаётся.\nДополнительное соглашение создаётся через `parentId` к родительскому договору, без отдельного `type = additional`.\nЕсли `parentId` задан, `intermediary` не передаётся; если `parentId` не задан, `intermediary` обязателен.\n",
+        "properties": {
+          "advertiserId": {
+            "description": "Id рекламодателя. Указываем только рекламодателей которые не являются аккаунтом. Если рекламодатель и аккаунт одно и тоже ЮЛ, договор создавать не надо",
+            "type": "integer"
+          },
+          "cid": {
+            "description": "CID внешнего договора, заполняется только для type = external.",
+            "nullable": true,
+            "type": "string"
+          },
+          "date": {
+            "description": "Дата в формате YYYY-MM-DD. Можно не передавать только для type = external.",
+            "format": "date",
+            "nullable": true,
+            "type": "string"
+          },
+          "description": {
+            "$ref": "#/components/schemas/ContractCounterpartyType"
+          },
+          "intermediary": {
+            "$ref": "#/components/schemas/CreteIntermediaryIn"
+          },
+          "isFundsAllocationToPrincipal": {
+            "description": "Денежные средства на размещение рекламы идут в сторону принципала",
+            "type": "boolean"
+          },
+          "isReportingRequired": {
+            "description": "На исполнителе лежит обязанность отчитываться по креативам",
+            "type": "boolean"
+          },
+          "number": {
+            "description": "Номер договора. Можно не передавать только для type = external.",
+            "nullable": true,
+            "type": "string"
+          },
+          "object": {
+            "$ref": "#/components/schemas/ContractAction"
+          },
+          "parentId": {
+            "description": "ID родительского договора для доп. соглашения",
+            "nullable": true,
+            "type": "integer"
+          },
+          "subject": {
+            "$ref": "#/components/schemas/ContractSubject"
+          },
+          "type": {
+            "$ref": "#/components/schemas/ContractType"
+          }
+        },
+        "required": [
+          "description",
+          "advertiserId",
+          "type"
+        ],
+        "type": "object"
+      },
+      "V1CreateContractOut": {
+        "properties": {
+          "id": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "type": "object"
+      },
+      "V1CreateGroupIn": {
+        "description": "Payload запроса на создание группы",
+        "properties": {
+          "activitySchedule": {
+            "$ref": "#/components/schemas/CreateGroupActivitySchedule"
+          },
+          "bannerFormat": {
+            "$ref": "#/components/schemas/BannerFormat"
+          },
+          "budget": {
+            "description": "Бюджет группы в рублях с НДС",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "budgetFrequency": {
+            "$ref": "#/components/schemas/BudgetFrequency"
+          },
+          "campaignID": {
+            "description": "ID кампании",
+            "type": "integer"
+          },
+          "frequencyRules": {
+            "description": "Правила ограничения частоты показов. Если поле отсутствует, передано null или передан пустой массив, ограничение не применяется.",
+            "items": {
+              "$ref": "#/components/schemas/FrequencyRule"
+            },
+            "maxItems": 2,
+            "type": "array"
+          },
+          "name": {
+            "description": "Название группы",
+            "maxLength": 99,
+            "minLength": 1,
+            "type": "string"
+          },
+          "pace": {
+            "$ref": "#/components/schemas/Paces"
+          },
+          "periodEndAt": {
+            "description": "Окончание периода показов в формате RFC3339, например 2026-12-31T23:59:59+03:00",
+            "format": "date-time",
+            "nullable": true,
+            "type": "string"
+          },
+          "periodStartAt": {
+            "description": "Начало периода показов в формате RFC3339, например 2026-07-01T10:00:00+03:00",
+            "format": "date-time",
+            "nullable": true,
+            "type": "string"
+          },
+          "periodTimezone": {
+            "$ref": "#/components/schemas/PeriodTimezone"
+          },
+          "price": {
+            "description": "Ставка в рублях с НДС",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "priceControl": {
+            "$ref": "#/components/schemas/GroupPriceControl"
+          },
+          "scheduleType": {
+            "$ref": "#/components/schemas/ScheduleType"
+          },
+          "startASAP": {
+            "description": "Запускать как можно скорее",
+            "type": "boolean"
+          },
+          "targetingAgeIDs": {
+            "description": "ID возрастных сегментов",
+            "items": {
+              "type": "integer"
+            },
+            "type": "array"
+          },
+          "targetingFamilyStatusIDs": {
+            "description": "ID family status сегментов",
+            "items": {
+              "type": "integer"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "targetingGenderIDs": {
+            "description": "ID пола",
+            "items": {
+              "type": "integer"
+            },
+            "type": "array"
+          },
+          "targetingIncomeIDs": {
+            "description": "ID доходных сегментов",
+            "items": {
+              "type": "integer"
+            },
+            "type": "array"
+          },
+          "targetingInterestIDs": {
+            "description": "ID интересов",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "targetingLocationIDs": {
+            "description": "ID локаций",
+            "items": {
+              "type": "integer"
+            },
+            "type": "array"
+          },
+          "targetingParentStatusIDs": {
+            "description": "ID parent status сегментов",
+            "items": {
+              "type": "integer"
+            },
+            "nullable": true,
+            "type": "array"
+          }
+        },
+        "required": [
+          "campaignID",
+          "name",
+          "budget",
+          "budgetFrequency",
+          "price",
+          "priceControl",
+          "pace",
+          "frequencyRules",
+          "scheduleType",
+          "periodTimezone",
+          "startASAP",
+          "bannerFormat",
+          "targetingLocationIDs",
+          "targetingInterestIDs",
+          "targetingGenderIDs",
+          "targetingAgeIDs",
+          "targetingIncomeIDs"
+        ],
+        "type": "object"
+      },
+      "V1CreateGroupOut": {
+        "properties": {
+          "id": {
+            "description": "ID созданной группы",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "type": "object"
+      },
+      "V1CreateNonPayerAccountIn": {
+        "description": "Payload создания аккаунта",
+        "properties": {
+          "isSelfAdvertisingEnabled": {
+            "description": "Флаг разрешающий рекламировать родительский аккаунт. Если вам надо рекламировать нового рекламодателя без возможности рекламировать родителя, выставлять - false",
+            "nullable": true,
+            "type": "boolean"
+          },
+          "shortName": {
+            "description": "Краткое название дочернего аккаунта, меньше 64 символов",
+            "type": "string"
+          }
+        },
+        "required": [
+          "shortName",
+          "isSelfAdvertisingEnabled"
+        ],
+        "type": "object"
+      },
+      "V1CreateNonPayerAccountOut": {
+        "properties": {
+          "accountID": {
+            "type": "integer"
+          },
+          "clientKey": {
+            "type": "string"
+          },
+          "clientSecret": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "accountID",
+          "clientKey",
+          "clientSecret"
+        ],
+        "type": "object"
+      },
+      "V1DeleteCampaignsIn": {
+        "description": "Payload удаления кампаний аккаунта",
+        "properties": {
+          "campaignIDs": {
+            "description": "Список ID кампаний",
+            "items": {
+              "type": "integer"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "campaignIDs"
+        ],
+        "type": "object"
+      },
+      "V1DeleteCreativesIn": {
+        "description": "Payload удаления креативов аккаунта",
+        "properties": {
+          "creativeIDs": {
+            "description": "Список ID креативов",
+            "items": {
+              "type": "integer"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "creativeIDs"
+        ],
+        "type": "object"
+      },
+      "V1DeleteGroupsIn": {
+        "description": "Payload удаления групп аккаунта",
+        "properties": {
+          "groupIDs": {
+            "description": "Список ID групп",
+            "items": {
+              "type": "integer"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "groupIDs"
+        ],
+        "type": "object"
+      },
+      "V1GetAccountBalanceByIdOut": {
+        "properties": {
+          "balance": {
+            "description": "Баланс аккаунта  в рублях",
+            "type": "integer"
+          },
+          "balanceKopeks": {
+            "description": "Баланс аккаунта в копейках",
+            "type": "integer"
+          },
+          "bonusBalance": {
+            "description": "Баланс бонусов на аккаунте в рублях",
+            "type": "integer"
+          },
+          "bonusBalanceKopeks": {
+            "description": "Баланс бонусов на аккаунте в копейках",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "balance",
+          "balanceKopeks",
+          "bonusBalance",
+          "bonusBalanceKopeks"
+        ],
+        "type": "object"
+      },
+      "V1GetAccountByIdOut": {
+        "properties": {
+          "account": {
+            "$ref": "#/components/schemas/Account"
+          }
+        },
+        "type": "object"
+      },
+      "V1GetAdvertisersListIn": {
+        "description": "Payload запроса на получение списка рекламодателей",
+        "properties": {
+          "filter": {
+            "$ref": "#/components/schemas/AdvertiserFilter"
+          },
+          "limit": {
+            "default": 20,
+            "description": "Количество записей на странице",
+            "maximum": 100,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "page": {
+            "default": 1,
+            "description": "Номер страницы",
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "filter",
+          "limit",
+          "page"
+        ],
+        "type": "object"
+      },
+      "V1GetAdvertisersListOut": {
+        "properties": {
+          "advertisers": {
+            "items": {
+              "$ref": "#/components/schemas/Advertiser"
+            },
+            "type": "array"
+          },
+          "total": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total",
+          "advertisers"
+        ],
+        "type": "object"
+      },
+      "V1GetCampaignByIdWithFieldsOut": {
+        "properties": {
+          "campaign": {
+            "$ref": "#/components/schemas/Campaign"
+          },
+          "editableFields": {
+            "items": {
+              "$ref": "#/components/schemas/CampaignFieldName"
+            },
+            "type": "array"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "campaign",
+          "warnings",
+          "editableFields"
+        ],
+        "type": "object"
+      },
+      "V1GetCampaignStatisticIn": {
+        "description": "Request body для запроса статистики по кампании. Максимальный период между dateFrom и dateTo — 100 дней.",
+        "properties": {
+          "dateFrom": {
+            "description": "Дата начала периода в формате YYYY-MM-DD",
+            "format": "date",
+            "type": "string"
+          },
+          "dateTo": {
+            "description": "Дата окончания периода в формате YYYY-MM-DD",
+            "format": "date",
+            "type": "string"
+          }
+        },
+        "required": [
+          "dateFrom",
+          "dateTo"
+        ],
+        "type": "object"
+      },
+      "V1GetCampaignStatisticOut": {
+        "description": "Статистика по кампании",
+        "properties": {
+          "campaign": {
+            "$ref": "#/components/schemas/CampaignStatistic"
+          },
+          "creatives": {
+            "description": "Статистика по креативам кампании",
+            "items": {
+              "$ref": "#/components/schemas/CreativeStatistic"
+            },
+            "type": "array"
+          },
+          "groups": {
+            "description": "Статистика по группам кампании",
+            "items": {
+              "$ref": "#/components/schemas/GroupStatistic"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "campaign",
+          "groups",
+          "creatives"
+        ],
+        "type": "object"
+      },
+      "V1GetCampaignsListIn": {
+        "description": "Payload запроса на получение списка кампаний",
+        "properties": {
+          "filter": {
+            "$ref": "#/components/schemas/CampaignsFilter"
+          },
+          "limit": {
+            "default": 20,
+            "description": "Количество записей на странице",
+            "maximum": 100,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "page": {
+            "default": 1,
+            "description": "Номер страницы",
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "filter",
+          "limit",
+          "page"
+        ],
+        "type": "object"
+      },
+      "V1GetCampaignsListOut": {
+        "properties": {
+          "campaigns": {
+            "items": {
+              "$ref": "#/components/schemas/Campaign"
+            },
+            "type": "array"
+          },
+          "total": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total",
+          "campaigns"
+        ],
+        "type": "object"
+      },
+      "V1GetChildAccountsListOut": {
+        "properties": {
+          "children": {
+            "items": {
+              "$ref": "#/components/schemas/ShortAccountWithContract"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "children"
+        ],
+        "type": "object"
+      },
+      "V1GetChildAccountsWithBalancesListOut": {
+        "properties": {
+          "children": {
+            "items": {
+              "$ref": "#/components/schemas/ShortAccountWithBalance"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "children"
+        ],
+        "type": "object"
+      },
+      "V1GetContractsListIn": {
+        "description": "Payload запроса на получение списка договоров",
+        "properties": {
+          "filter": {
+            "$ref": "#/components/schemas/ContractsFilter"
+          },
+          "limit": {
+            "default": 20,
+            "description": "Количество записей на странице",
+            "maximum": 100,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "page": {
+            "default": 1,
+            "description": "Номер страницы",
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "filter",
+          "limit",
+          "page"
+        ],
+        "type": "object"
+      },
+      "V1GetContractsListOut": {
+        "properties": {
+          "contracts": {
+            "items": {
+              "$ref": "#/components/schemas/Contract"
+            },
+            "type": "array"
+          },
+          "total": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total",
+          "contracts"
+        ],
+        "type": "object"
+      },
+      "V1GetCreativesListIn": {
+        "description": "Payload запроса на получение списка креативов",
+        "properties": {
+          "filter": {
+            "$ref": "#/components/schemas/CreativesFilter"
+          },
+          "limit": {
+            "default": 20,
+            "description": "Количество записей на странице",
+            "maximum": 100,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "page": {
+            "default": 1,
+            "description": "Номер страницы",
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "filter",
+          "limit",
+          "page"
+        ],
+        "type": "object"
+      },
+      "V1GetCreativesListOut": {
+        "properties": {
+          "creatives": {
+            "items": {
+              "$ref": "#/components/schemas/Creative"
+            },
+            "type": "array"
+          },
+          "total": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total",
+          "creatives"
+        ],
+        "type": "object"
+      },
+      "V1GetCreativesStatisticIn": {
+        "description": "Request body для запроса статистики по креативам кампании. Максимальный период между dateFrom и dateTo — 100 дней.",
+        "properties": {
+          "creativeIDs": {
+            "description": "Список ID креативов для получения статистики",
+            "items": {
+              "type": "integer"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "dateFrom": {
+            "description": "Дата начала периода в формате YYYY-MM-DD",
+            "format": "date",
+            "type": "string"
+          },
+          "dateTo": {
+            "description": "Дата окончания периода в формате YYYY-MM-DD",
+            "format": "date",
+            "type": "string"
+          }
+        },
+        "required": [
+          "dateFrom",
+          "dateTo",
+          "creativeIDs"
+        ],
+        "type": "object"
+      },
+      "V1GetCreativesStatisticOut": {
+        "description": "Статистика по креативам кампании",
+        "properties": {
+          "creatives": {
+            "description": "Статистика по креативам кампании",
+            "items": {
+              "$ref": "#/components/schemas/CreativeStatistic"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "creatives"
+        ],
+        "type": "object"
+      },
+      "V1GetGroupReferenceDataOut": {
+        "properties": {
+          "referenceData": {
+            "$ref": "#/components/schemas/GroupReferenceData"
+          }
+        },
+        "required": [
+          "referenceData"
+        ],
+        "type": "object"
+      },
+      "V1GetGroupsListIn": {
+        "description": "Payload запроса на получение списка кампаний",
+        "properties": {
+          "filter": {
+            "$ref": "#/components/schemas/GroupsFilter"
+          },
+          "limit": {
+            "default": 20,
+            "description": "Количество записей на странице",
+            "maximum": 100,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "page": {
+            "default": 1,
+            "description": "Номер страницы",
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "filter",
+          "limit",
+          "page"
+        ],
+        "type": "object"
+      },
+      "V1GetGroupsListOut": {
+        "properties": {
+          "groups": {
+            "items": {
+              "$ref": "#/components/schemas/Group"
+            },
+            "type": "array"
+          },
+          "total": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total",
+          "groups"
+        ],
+        "type": "object"
+      },
+      "V1GetGroupsStatisticIn": {
+        "description": "Request body для запроса статистики по группам кампании. Максимальный период между dateFrom и dateTo — 100 дней.",
+        "properties": {
+          "dateFrom": {
+            "description": "Дата начала периода в формате YYYY-MM-DD",
+            "format": "date",
+            "type": "string"
+          },
+          "dateTo": {
+            "description": "Дата окончания периода в формате YYYY-MM-DD",
+            "format": "date",
+            "type": "string"
+          },
+          "groupIDs": {
+            "description": "Список ID групп для получения статистики",
+            "items": {
+              "type": "integer"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "dateFrom",
+          "dateTo",
+          "groupIDs"
+        ],
+        "type": "object"
+      },
+      "V1GetGroupsStatisticOut": {
+        "description": "Статистика по группам кампании",
+        "properties": {
+          "groups": {
+            "description": "Статистика по группам кампании",
+            "items": {
+              "$ref": "#/components/schemas/GroupStatistic"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "groups"
+        ],
+        "type": "object"
+      },
+      "V1GetHtmlOut": {
+        "properties": {
+          "errorReason": {
+            "description": "Причина ошибки (заполнено если status = ERROR)",
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "description": "ID HTML",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "UPLOADING",
+              "READY",
+              "ERROR"
+            ],
+            "type": "string"
+          },
+          "url": {
+            "description": "URL HTML файла",
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "status"
+        ],
+        "type": "object"
+      },
+      "V1GetImageOut": {
+        "properties": {
+          "id": {
+            "description": "ID изображения",
+            "type": "integer"
+          },
+          "url": {
+            "description": "URL изображения",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "url"
+        ],
+        "type": "object"
+      },
+      "V1GetLegalAttachmentsOut": {
+        "properties": {
+          "id": {
+            "description": "ID файла",
+            "type": "string"
+          },
+          "publicUrl": {
+            "description": "Публичный URL файла",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "publicUrl"
+        ],
+        "type": "object"
+      },
+      "V1GetUsersListByAccountOut": {
+        "properties": {
+          "total": {
+            "type": "integer"
+          },
+          "users": {
+            "items": {
+              "$ref": "#/components/schemas/User"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "total",
+          "users"
+        ],
+        "type": "object"
+      },
+      "V1GetVideoOut": {
+        "properties": {
+          "errorReason": {
+            "description": "Причина ошибки обработки видео",
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "description": "ID видео",
+            "type": "string"
+          },
+          "status": {
+            "description": "Статус видео",
+            "type": "string"
+          },
+          "thumbnailUrl": {
+            "description": "URL превью",
+            "nullable": true,
+            "type": "string"
+          },
+          "thumbnailVideoUrl": {
+            "description": "Видео-превью от хостинга",
+            "nullable": true,
+            "type": "string"
+          },
+          "title": {
+            "description": "Название видео",
+            "type": "string"
+          },
+          "videoUrl": {
+            "description": "URL видео",
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "status"
+        ],
+        "type": "object"
+      },
+      "V1LaunchCampaignsIn": {
+        "description": "Payload запуска кампаний аккаунта",
+        "properties": {
+          "campaignIDs": {
+            "description": "Список ID кампаний",
+            "items": {
+              "type": "integer"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "campaignIDs"
+        ],
+        "type": "object"
+      },
+      "V1LaunchGroupIn": {
+        "description": "Payload запуска группы аккаунта",
+        "properties": {
+          "groupID": {
+            "description": "ID группы",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "groupID"
+        ],
+        "type": "object"
+      },
+      "V1PauseCampaignsIn": {
+        "description": "Payload паузы кампаний",
+        "properties": {
+          "campaignIDs": {
+            "description": "Список ID кампаний для паузы",
+            "items": {
+              "type": "integer"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "campaignIDs"
+        ],
+        "type": "object"
+      },
+      "V1PauseCreativesIn": {
+        "description": "Payload паузы креативов аккаунта",
+        "properties": {
+          "creativeIDs": {
+            "description": "Список ID креативов",
+            "items": {
+              "type": "integer"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "creativeIDs"
+        ],
+        "type": "object"
+      },
+      "V1PauseGroupsIn": {
+        "description": "Payload паузы групп аккаунта",
+        "properties": {
+          "groupIDs": {
+            "description": "Список ID групп",
+            "items": {
+              "type": "integer"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "groupIDs"
+        ],
+        "type": "object"
+      },
+      "V1ReferenceDataCreateCreativeOut": {
+        "properties": {
+          "classifier": {
+            "items": {
+              "$ref": "#/components/schemas/KktuItem"
+            },
+            "type": "array"
+          },
+          "disclaimers": {
+            "items": {
+              "$ref": "#/components/schemas/Disclaimer"
+            },
+            "type": "array"
+          },
+          "templates": {
+            "items": {
+              "$ref": "#/components/schemas/TemplateData"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "classifier",
+          "disclaimers",
+          "templates"
+        ],
+        "type": "object"
+      },
+      "V1SetUserRoleIn": {
+        "description": "Payload изменение роли пользователя в аккаунте",
+        "properties": {
+          "role": {
+            "$ref": "#/components/schemas/UserRole"
+          },
+          "userId": {
+            "description": "ID пользователя авито",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "userId",
+          "role"
+        ],
+        "type": "object"
+      },
+      "V1StopCampaignsIn": {
+        "description": "Payload остановки кампаний",
+        "properties": {
+          "campaignIDs": {
+            "description": "Список ID кампаний для остановки",
+            "items": {
+              "type": "integer"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "campaignIDs"
+        ],
+        "type": "object"
+      },
+      "V1TransferBonusIn": {
+        "description": "Payload Перевода денег между аккаунтом родителем и дочками неплательщиками",
+        "properties": {
+          "accountIdTo": {
+            "description": "accountId на который перевести",
+            "type": "integer"
+          },
+          "amount": {
+            "description": "Сумма бонусов, не меньше 1 бонуса",
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "accountIdTo",
+          "amount"
+        ],
+        "type": "object"
+      },
+      "V1TransferFundsIn": {
+        "description": "Payload Перевода денег между аккаунтом родителем и дочками неплательщиками",
+        "properties": {
+          "accountIdTo": {
+            "description": "accountId на который перевести",
+            "type": "integer"
+          },
+          "amount": {
+            "description": "Сумма перевода в рублях, не меньше 1 рубля",
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "accountIdTo",
+          "amount"
+        ],
+        "type": "object"
+      },
+      "V1UnpauseCampaignsIn": {
+        "description": "Payload снятия кампаний с паузы",
+        "properties": {
+          "campaignIDs": {
+            "description": "Список ID кампаний для снятия с паузы",
+            "items": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "campaignIDs"
+        ],
+        "type": "object"
+      },
+      "V1UnpauseCreativesIn": {
+        "description": "Payload снятия креативов аккаунта с паузы",
+        "properties": {
+          "creativeIDs": {
+            "description": "Список ID креативов",
+            "items": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "creativeIDs"
+        ],
+        "type": "object"
+      },
+      "V1UnpauseGroupsIn": {
+        "description": "Payload снятия групп аккаунта с паузы",
+        "properties": {
+          "groupIDs": {
+            "description": "Список ID групп",
+            "items": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "groupIDs"
+        ],
+        "type": "object"
+      },
+      "V1UploadHtmlOut": {
+        "properties": {
+          "id": {
+            "description": "ID загруженного HTML",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "type": "object"
+      },
+      "V1UploadImageOut": {
+        "properties": {
+          "id": {
+            "description": "ID загруженного изображения",
+            "type": "integer"
+          },
+          "url": {
+            "description": "URL изображения",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "url"
+        ],
+        "type": "object"
+      },
+      "V1UploadLegalAttachmentsOut": {
+        "properties": {
+          "id": {
+            "description": "ID загруженного документа",
+            "type": "string"
+          },
+          "name": {
+            "description": "Имя файла",
+            "type": "string"
+          },
+          "url": {
+            "description": "Публичный URL файла",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "url"
+        ],
+        "type": "object"
+      },
+      "V1UploadVideoOut": {
+        "properties": {
+          "id": {
+            "description": "ID загруженного видео",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Публичное API кабинета Авито Реклама",
+    "title": "Авито Реклама",
+    "version": "1.4.0",
+    "x-skip-documentation": false
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/ads/v1/account/{accountID}": {
+      "get": {
+        "description": "Возвращает реквизиты рекламного аккаунта по его ID: ИНН, КПП, ОГРН, юридический и фактический адреса, контактное лицо и менеджера.\nТокен имеет доступ только к тому аккаунту, в котором был выдан.\n",
+        "operationId": "V1GetAccountByID",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1GetAccountByIdOut"
+                }
+              }
+            },
+            "description": "Ok",
+            "headers": {
+              "Api-Point-Balance": {
+                "description": "Остаток API-баллов после выполнения запроса",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Некорректный запрос"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Не авторизован"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Доступ запрещен"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Аккаунт не найден"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Слишком много запросов"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Сервис недоступен"
+          }
+        },
+        "security": [
+          {
+            "ClientCredentials": []
+          }
+        ],
+        "summary": "Получить аккаунт по ID",
+        "x-cost": {
+          "default": 1,
+          "type": "integer"
+        },
+        "x-rate-limiter": {
+          "default": 500
+        }
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "accountID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "post": {
+        "description": "Создаёт тестовый аккаунт. Метод работает **только в песочнице** (`https://api.avito.ru/ads-sandbox/`); для боевых аккаунтов используйте веб-интерфейс кабинета.\nОграничения песочницы: время жизни аккаунта — до 00:00 текущего дня; в сутки можно создать не более 1 тестового аккаунта.\n",
+        "operationId": "V1CreateAccount",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/V1CreateAccountIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1CreateAccountOut"
+                }
+              }
+            },
+            "description": "Ok",
+            "headers": {
+              "Api-Point-Balance": {
+                "description": "Остаток API-баллов после выполнения запроса",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "207": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1CreateAccountOut"
+                }
+              }
+            },
+            "description": "Аккаунт создан, но часть sandbox-данных не подготовилась",
+            "headers": {
+              "Api-Point-Balance": {
+                "description": "Остаток API-баллов после выполнения запроса",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Некорректный запрос"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Не авторизован"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Доступ запрещен"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Слишком много запросов"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Сервис недоступен"
+          }
+        },
+        "summary": "Создать аккаунт в песочнице",
+        "x-cost": {
+          "default": 0,
+          "type": "integer"
+        },
+        "x-rate-limiter": {
+          "default": 500
+        }
+      }
+    },
+    "/ads/v1/account/{accountID}/add-user": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "accountID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "post": {
+        "description": "Добавляет пользователя Авито в рекламный аккаунт с указанной ролью. Доступные роли: `admin` (полный доступ) и `viewer` (только просмотр).\nПользователь идентифицируется по `userId` (ID профиля на Авито).\n",
+        "operationId": "V1AddUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/V1AddUserIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            },
+            "description": "Ok",
+            "headers": {
+              "Api-Point-Balance": {
+                "description": "Остаток API-баллов после выполнения запроса",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Некорректный запрос"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Не авторизован"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Доступ запрещен"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Слишком много запросов"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Сервис недоступен"
+          }
+        },
+        "security": [
+          {
+            "ClientCredentials": []
+          }
+        ],
+        "summary": "Добавить пользователя в аккаунт",
+        "x-cost": {
+          "default": 5,
+          "type": "integer"
+        },
+        "x-rate-limiter": {
+          "default": 500
+        }
+      }
+    },
+    "/ads/v1/account/{accountID}/advertisers": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "accountID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "post": {
+        "description": "Возвращает список рекламодателей аккаунта с пагинацией. Доступные фильтры: список `ids`, список `inns`, список ролей (`roles`).\nПараметры пагинации: `limit` — от 1 до 100 (по умолчанию 20), `page` — от 1.\n",
+        "operationId": "V1GetAdvertisersList",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/V1GetAdvertisersListIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1GetAdvertisersListOut"
+                }
+              }
+            },
+            "description": "Ok",
+            "headers": {
+              "Api-Point-Balance": {
+                "description": "Остаток API-баллов после выполнения запроса",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Некорректный запрос"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Не авторизован"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Доступ запрещен"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Аккаунт не найден"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Слишком много запросов"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Сервис недоступен"
+          }
+        },
+        "security": [
+          {
+            "ClientCredentials": []
+          }
+        ],
+        "summary": "Получить список рекламодателей по фильтрам",
+        "x-cost": {
+          "default": 1,
+          "type": "integer"
+        },
+        "x-rate-limiter": {
+          "default": 500
+        }
+      }
+    },
+    "/ads/v1/account/{accountID}/balance": {
+      "get": {
+        "description": "Возвращает текущий баланс рекламного аккаунта: денежные средства (`balance`) и бонусы (`bonusBalance`).\nВсе суммы — в рублях, целые числа.\n",
+        "operationId": "V1GetAccountBalanceByID",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1GetAccountBalanceByIdOut"
+                }
+              }
+            },
+            "description": "Ok",
+            "headers": {
+              "Api-Point-Balance": {
+                "description": "Остаток API-баллов после выполнения запроса",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Некорректный запрос"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Не авторизован"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Доступ запрещен"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Аккаунт не найден"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Слишком много запросов"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Сервис недоступен"
+          }
+        },
+        "security": [
+          {
+            "ClientCredentials": []
+          }
+        ],
+        "summary": "Получить баланс аккаунта по ID",
+        "x-cost": {
+          "default": 1,
+          "type": "integer"
+        },
+        "x-rate-limiter": {
+          "default": 500
+        }
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "accountID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ]
+    },
+    "/ads/v1/account/{accountID}/bonus-transfer": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "accountID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "post": {
+        "description": "Переводит бонусы между родительским и дочерним аккаунтом-неплательщиком. Логика направления та же, что у `funds-transfer`: `accountID` в path — источник, `accountIdTo` в body — получатель; для перевода с дочернего на родителя нужен токен дочернего аккаунта.\nСумма `amount` — целое число, не меньше 1 бонуса.\n",
+        "operationId": "V1TransferBonus",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/V1TransferBonusIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            },
+            "description": "Ok",
+            "headers": {
+              "Api-Point-Balance": {
+                "description": "Остаток API-баллов после выполнения запроса",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Некорректный запрос"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Не авторизован"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Доступ запрещен"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Аккаунт не найден"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Слишком много запросов"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Сервис недоступен"
+          }
+        },
+        "security": [
+          {
+            "ClientCredentials": []
+          }
+        ],
+        "summary": "Перевод бонусов между аккаунтом родителем и дочерними на одном договоре",
+        "x-cost": {
+          "default": 1,
+          "type": "integer"
+        },
+        "x-rate-limiter": {
+          "default": 500
+        }
+      }
+    },
+    "/ads/v1/account/{accountID}/campaigns": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "accountID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "post": {
+        "description": "Возвращает список рекламных кампаний аккаунта с пагинацией. Поддерживает фильтрацию по ID, моделям оплаты (`CPM`/`CPC`), типам кампании (`textImage`/`HTML`/`video`), статусам, менеджерам, рекламодателям, договорам, диапазону дат создания и диапазону периода размещения.\nПараметры пагинации: `limit` — от 1 до 100 (по умолчанию 20), `page` — от 1.\n",
+        "operationId": "V1GetCampaignsList",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/V1GetCampaignsListIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1GetCampaignsListOut"
+                }
+              }
+            },
+            "description": "Ok",
+            "headers": {
+              "Api-Point-Balance": {
+                "description": "Остаток API-баллов после выполнения запроса",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Некорректный запрос"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Не авторизован"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Доступ запрещен"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Аккаунт не найден"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Слишком много запросов"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Сервис недоступен"
+          }
+        },
+        "summary": "Получить список кампаний по фильтрам",
+        "x-cost": {
+          "default": 1,
+          "type": "integer"
+        },
+        "x-rate-limiter": {
+          "default": 500
+        }
+      }
+    },
+    "/ads/v1/account/{accountID}/campaigns/{campaignID}/creatives/stats": {
+      "parameters": [
+        {
+          "description": "ID аккаунта",
+          "in": "path",
+          "name": "accountID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "description": "ID кампании",
+          "in": "path",
+          "name": "campaignID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "post": {
+        "description": "Возвращает статистику по конкретным креативам указанной кампании за заданный период. В `creativeIDs` нужно передать минимум один ID креатива.\n**Ограничение:** максимальный период между `dateFrom` и `dateTo` — 100 дней.\nСтатистика обновляется раз в 30 минут, поэтому более частые запросы не дадут более свежих данных.\n",
+        "operationId": "V1GetCreativesStatistic",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/V1GetCreativesStatisticIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1GetCreativesStatisticOut"
+                }
+              }
+            },
+            "description": "Ok",
+            "headers": {
+              "Api-Point-Balance": {
+                "description": "Остаток API-баллов после выполнения запроса",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Некорректный запрос"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Не авторизован"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Доступ запрещен"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Кампания не найдена"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Слишком много запросов"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Сервис недоступен"
+          }
+        },
+        "security": [
+          {
+            "ClientCredentials": []
+          }
+        ],
+        "summary": "Получить статистику по креативам кампании",
+        "x-cost": {
+          "default": 1,
+          "type": "integer"
+        },
+        "x-rate-limiter": {
+          "default": 10
+        }
+      }
+    },
+    "/ads/v1/account/{accountID}/campaigns/{campaignID}/groups/stats": {
+      "parameters": [
+        {
+          "description": "ID аккаунта",
+          "in": "path",
+          "name": "accountID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "description": "ID кампании",
+          "in": "path",
+          "name": "campaignID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "post": {
+        "description": "Возвращает статистику по конкретным группам объявлений внутри указанной кампании за заданный период. В `groupIDs` нужно передать минимум один ID группы.\n**Ограничение:** максимальный период между `dateFrom` и `dateTo` — 100 дней.\nСтатистика обновляется раз в 30 минут, поэтому более частые запросы не дадут более свежих данных.\n",
+        "operationId": "V1GetGroupsStatistic",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/V1GetGroupsStatisticIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1GetGroupsStatisticOut"
+                }
+              }
+            },
+            "description": "Ok",
+            "headers": {
+              "Api-Point-Balance": {
+                "description": "Остаток API-баллов после выполнения запроса",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Некорректный запрос"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Не авторизован"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Доступ запрещен"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Кампания не найдена"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Слишком много запросов"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Сервис недоступен"
+          }
+        },
+        "security": [
+          {
+            "ClientCredentials": []
+          }
+        ],
+        "summary": "Получить статистику по группам кампании",
+        "x-cost": {
+          "default": 5,
+          "type": "integer"
+        },
+        "x-rate-limiter": {
+          "default": 10
+        }
+      }
+    },
+    "/ads/v1/account/{accountID}/campaigns/{campaignID}/stats": {
+      "parameters": [
+        {
+          "description": "ID аккаунта",
+          "in": "path",
+          "name": "accountID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "description": "ID кампании",
+          "in": "path",
+          "name": "campaignID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "post": {
+        "description": "Возвращает агрегированную статистику по кампании (показы, клики, CTR, расход, CPM/CPC, метрики видеопросмотров) за указанный период с дневной гранулярностью, а также сводку по группам и креативам кампании.\n**Ограничение:** максимальный период между `dateFrom` и `dateTo` — 100 дней.\nСтатистика обновляется раз в 30 минут, поэтому более частые запросы не дадут более свежих данных.\n",
+        "operationId": "V1GetCampaignStatistic",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/V1GetCampaignStatisticIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1GetCampaignStatisticOut"
+                }
+              }
+            },
+            "description": "Ok",
+            "headers": {
+              "Api-Point-Balance": {
+                "description": "Остаток API-баллов после выполнения запроса",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Некорректный запрос"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Не авторизован"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Доступ запрещен"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Кампания не найдена"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Слишком много запросов"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Сервис недоступен"
+          }
+        },
+        "security": [
+          {
+            "ClientCredentials": []
+          }
+        ],
+        "summary": "Получить статистику по кампании",
+        "x-cost": {
+          "default": 10,
+          "type": "integer"
+        },
+        "x-rate-limiter": {
+          "default": 5
+        }
+      }
+    },
+    "/ads/v1/account/{accountID}/children": {
+      "get": {
+        "description": "Возвращает список дочерних аккаунтов, привязанных к текущему (родительскому) аккаунту, вместе с их договорами. \nУ дочерних аккаунтов на одном договоре с родителем не передается информация о договоре.\nЕсли нужны также балансы дочерних аккаунтов, используйте `GET /ads/v1/account/{accountID}/children-with-balances`.\n",
+        "operationId": "V1GetChildAccountsList",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1GetChildAccountsListOut"
+                }
+              }
+            },
+            "description": "Ok",
+            "headers": {
+              "Api-Point-Balance": {
+                "description": "Остаток API-баллов после выполнения запроса",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Некорректный запрос"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Не авторизован"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Доступ запрещен"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Аккаунт не найден"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Слишком много запросов"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Сервис недоступен"
+          }
+        },
+        "summary": "Получить список дочерних аккаунтов",
+        "x-cost": {
+          "default": 1,
+          "type": "integer"
+        },
+        "x-rate-limiter": {
+          "default": 500
+        }
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "accountID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ]
+    },
+    "/ads/v1/account/{accountID}/children-with-balances": {
+      "get": {
+        "description": "Возвращает список дочерних аккаунтов вместе с их балансами (денежные средства, бонусы).\nУдобно для проверки результата переводов через `funds-transfer` / `bonus-transfer`.\n",
+        "operationId": "V1GetChildAccountsWithBalancesList",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1GetChildAccountsWithBalancesListOut"
+                }
+              }
+            },
+            "description": "Ok",
+            "headers": {
+              "Api-Point-Balance": {
+                "description": "Остаток API-баллов после выполнения запроса",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Некорректный запрос"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Не авторизован"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Доступ запрещен"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Аккаунт не найден"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Слишком много запросов"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Сервис недоступен"
+          }
+        },
+        "summary": "Получить список дочерних аккаунтов с балансами",
+        "x-cost": {
+          "default": 5,
+          "type": "integer"
+        },
+        "x-rate-limiter": {
+          "default": 500
+        }
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "accountID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ]
+    },
+    "/ads/v1/account/{accountID}/contracts": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "accountID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "post": {
+        "description": "Возвращает список договоров аккаунта с пагинацией. Доступные фильтры: `ids` (ID договоров), `numbers` (номера договоров), `contractors` и `clients` (фильтры по сторонам договора).\nПараметры пагинации: `limit` — от 1 до 100 (по умолчанию 20), `page` — от 1.\n",
+        "operationId": "V1GetContractsList",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/V1GetContractsListIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1GetContractsListOut"
+                }
+              }
+            },
+            "description": "Ok",
+            "headers": {
+              "Api-Point-Balance": {
+                "description": "Остаток API-баллов после выполнения запроса",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Некорректный запрос"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Не авторизован"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Доступ запрещен"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Аккаунт не найден"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Слишком много запросов"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Сервис недоступен"
+          }
+        },
+        "summary": "Получить список договоров по фильтрам",
+        "x-cost": {
+          "default": 1,
+          "type": "integer"
+        },
+        "x-rate-limiter": {
+          "default": 500
+        }
+      }
+    },
+    "/ads/v1/account/{accountID}/create-advertiser": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "accountID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "post": {
+        "description": "Создаёт рекламодателя — юридическое лицо (или ИП), от лица которого будут размещаться рекламные кампании в этом аккаунте.\nОдин аккаунт может иметь несколько рекламодателей. Если рекламодатель и аккаунт — одно и то же ЮЛ/ИП, договор между ними создавать не нужно; иначе после создания рекламодателя необходимо создать договор через `POST /ads/v1/account/{accountID}/create-contract`.\n",
+        "operationId": "V1CreateAdvertiser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/V1CreateAdvertiserIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1CreateAdvertiserOut"
+                }
+              }
+            },
+            "description": "Ok",
+            "headers": {
+              "Api-Point-Balance": {
+                "description": "Остаток API-баллов после выполнения запроса",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Некорректный запрос"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Не авторизован"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Доступ запрещен"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Аккаунт не найден"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Слишком много запросов"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Сервис недоступен"
+          }
+        },
+        "security": [
+          {
+            "ClientCredentials": []
+          }
+        ],
+        "summary": "Создать рекламодателя",
+        "x-cost": {
+          "default": 2,
+          "type": "integer"
+        },
+        "x-rate-limiter": {
+          "default": 500
+        }
+      }
+    },
+    "/ads/v1/account/{accountID}/create-contract": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "accountID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "post": {
+        "description": "Создаёт изначальный договор между аккаунтом и рекламодателем. Договор требуется только если рекламодатель и аккаунт — не одно и то же ЮЛ/ИП; для совпадающих контрагентов договор не создаётся.\nДля дополнительного соглашения укажите `parentId` (родительский договор) и не передавайте `intermediary`; для внешнего договора (`type = external`) передайте `cid` и не передавайте `parentId`.\n",
+        "operationId": "V1CreateContract",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/V1CreateContractIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1CreateContractOut"
+                }
+              }
+            },
+            "description": "Ok",
+            "headers": {
+              "Api-Point-Balance": {
+                "description": "Остаток API-баллов после выполнения запроса",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Некорректный запрос"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Не авторизован"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Доступ запрещен"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Аккаунт не найден"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Слишком много запросов"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Сервис недоступен"
+          }
+        },
+        "summary": "Создание изначального договора",
+        "x-cost": {
+          "default": 2,
+          "type": "integer"
+        },
+        "x-rate-limiter": {
+          "default": 500
+        }
+      }
+    },
+    "/ads/v1/account/{accountID}/create-nonpayer-child-account": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "accountID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "post": {
+        "description": "Создаёт дочерний аккаунта под текущим (родительским) аккаунтом на том же договоре. В ответе возвращаются `accountID`, `clientKey` и `clientSecret` — пара ключей для генерации отдельного токена дочернего аккаунта.\nВ песочнице токен для созданного дочернего аккаунта использовать **нельзя**; проверить факт создания можно через `GET /ads/v1/account/{accountID}/children`.\n",
+        "operationId": "V1CreateNonPayerAccount",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/V1CreateNonPayerAccountIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1CreateNonPayerAccountOut"
+                }
+              }
+            },
+            "description": "Ok",
+            "headers": {
+              "Api-Point-Balance": {
+                "description": "Остаток API-баллов после выполнения запроса",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Некорректный запрос"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Не авторизован"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Доступ запрещен"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Аккаунт не найден"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Слишком много запросов"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Сервис недоступен"
+          }
+        },
+        "security": [
+          {
+            "ClientCredentials": []
+          }
+        ],
+        "summary": "Создание дочернего аккаунта на договоре родителя",
+        "x-cost": {
+          "default": 1,
+          "type": "integer"
+        },
+        "x-rate-limiter": {
+          "default": 500
+        }
+      }
+    },
+    "/ads/v1/account/{accountID}/creatives": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "accountID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "post": {
+        "description": "Возвращает список креативов аккаунта с пагинацией. Поддерживает фильтрацию по ID креативов, ID групп, ID кампаний, моделям оплаты, типам кампании, статусам, менеджерам, рекламодателям и периоду размещения.\nПараметры пагинации: `limit` — от 1 до 100 (по умолчанию 20), `page` — от 1.\n",
+        "operationId": "V1GetCreativesList",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/V1GetCreativesListIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1GetCreativesListOut"
+                }
+              }
+            },
+            "description": "Ok",
+            "headers": {
+              "Api-Point-Balance": {
+                "description": "Остаток API-баллов после выполнения запроса",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Некорректный запрос"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Не авторизован"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Доступ запрещен"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Аккаунт не найден"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Слишком много запросов"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Сервис недоступен"
+          }
+        },
+        "summary": "Получить список креативов по фильтрам",
+        "x-cost": {
+          "default": 1,
+          "type": "integer"
+        },
+        "x-rate-limiter": {
+          "default": 500
+        }
+      }
+    },
+    "/ads/v1/account/{accountID}/delete-user/{userID}": {
+      "delete": {
+        "description": "Удаляет пользователя из рекламного аккаунта. Доступ пользователя к аккаунту прекращается сразу после успешного выполнения запроса.\n`userID` в path — ID пользователя, которого нужно удалить.\n",
+        "operationId": "V1DeleteUser",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            },
+            "description": "Ok",
+            "headers": {
+              "Api-Point-Balance": {
+                "description": "Остаток API-баллов после выполнения запроса",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Некорректный запрос"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Не авторизован"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Доступ запрещен"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Слишком много запросов"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Сервис недоступен"
+          }
+        },
+        "summary": "Удалить пользователя из аккаунта",
+        "x-cost": {
+          "default": 5,
+          "type": "integer"
+        },
+        "x-rate-limiter": {
+          "default": 500
+        }
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "accountID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "in": "path",
+          "name": "userID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ]
+    },
+    "/ads/v1/account/{accountID}/funds-transfer": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "accountID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "post": {
+        "description": "Переводит денежные средства между родительским и дочерним аккаунтом на одном договоре. `accountID` в path — аккаунт-источник (с него списываются деньги), `accountIdTo` в body — аккаунт-получатель.\nПеревод выполняется от имени аккаунта-источника, поэтому для перевода с дочернего на родительский нужен токен дочернего аккаунта. Сумма `amount` — целое число, не меньше 1 рубля.\n",
+        "operationId": "V1TransferFunds",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/V1TransferFundsIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            },
+            "description": "Ok",
+            "headers": {
+              "Api-Point-Balance": {
+                "description": "Остаток API-баллов после выполнения запроса",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Некорректный запрос"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Не авторизован"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Доступ запрещен"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Аккаунт не найден"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Слишком много запросов"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Сервис недоступен"
+          }
+        },
+        "security": [
+          {
+            "ClientCredentials": []
+          }
+        ],
+        "summary": "Перевод денег между аккаунтом родителем и дочерними на одном договоре",
+        "x-cost": {
+          "default": 1,
+          "type": "integer"
+        },
+        "x-rate-limiter": {
+          "default": 500
+        }
+      }
+    },
+    "/ads/v1/account/{accountID}/group/{groupID}/change-budget": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "accountID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "in": "path",
+          "name": "groupID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "post": {
+        "description": "Устанавливает новый бюджет для указанной группы объявлений. Значение `budget` указывается в рублях с НДС, целое число.\n**Ограничение:** `budget` — целое число не меньше 1. Метод работает только для групп с ручным управлением ставкой.\n",
+        "operationId": "V1ChangeBudget",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/V1ChangeBudgetIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            },
+            "description": "Ok",
+            "headers": {
+              "Api-Point-Balance": {
+                "description": "Остаток API-баллов после выполнения запроса",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Некорректный запрос"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Не авторизован"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Доступ запрещен"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Аккаунт или группа не найдены"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Конфликт версий группы"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Слишком много запросов"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Сервис недоступен"
+          }
+        },
+        "summary": "Изменить бюджет группы",
+        "x-cost": {
+          "default": 3,
+          "type": "integer"
+        },
+        "x-rate-limiter": {
+          "default": 500
+        }
+      }
+    },
+    "/ads/v1/account/{accountID}/group/{groupID}/change-price": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "accountID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "in": "path",
+          "name": "groupID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "post": {
+        "description": "Устанавливает новую цену (CPC или CPM в зависимости от модели оплаты кампании) для указанной группы объявлений. Значение `price` указывается в рублях с НДС, целое число.\n**Ограничение:** `price` — целое число не меньше 1. Метод работает только для групп с ручным управлением ставкой.\n",
+        "operationId": "V1ChangePrice",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/V1ChangePriceIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            },
+            "description": "Ok",
+            "headers": {
+              "Api-Point-Balance": {
+                "description": "Остаток API-баллов после выполнения запроса",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Некорректный запрос"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Не авторизован"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Доступ запрещен"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Аккаунт или группа не найдены"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Конфликт версий группы"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Слишком много запросов"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Сервис недоступен"
+          }
+        },
+        "summary": "Изменить цену группы",
+        "x-cost": {
+          "default": 3,
+          "type": "integer"
+        },
+        "x-rate-limiter": {
+          "default": 500
+        }
+      }
+    },
+    "/ads/v1/account/{accountID}/groups": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "accountID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "post": {
+        "description": "Возвращает список групп объявлений аккаунта с пагинацией. Поддерживает фильтрацию по ID групп, ID кампаний, статусам, скоростям показов (`paces`), менеджерам, рекламодателям, моделям оплаты и периоду размещения.\nПараметры пагинации: `limit` — от 1 до 100 (по умолчанию 20), `page` — от 1.\n",
+        "operationId": "V1GetGroupsList",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/V1GetGroupsListIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1GetGroupsListOut"
+                }
+              }
+            },
+            "description": "Ok",
+            "headers": {
+              "Api-Point-Balance": {
+                "description": "Остаток API-баллов после выполнения запроса",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Некорректный запрос"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Не авторизован"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Доступ запрещен"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Аккаунт не найден"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Слишком много запросов"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Сервис недоступен"
+          }
+        },
+        "summary": "Получить список групп по фильтрам",
+        "x-cost": {
+          "default": 1,
+          "type": "integer"
+        },
+        "x-rate-limiter": {
+          "default": 500
+        }
+      }
+    },
+    "/ads/v1/account/{accountID}/set-user-role": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "accountID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "post": {
+        "description": "Меняет роль уже добавленного в аккаунт пользователя. Доступные значения роли: `admin` (полный доступ) и `viewer` (только просмотр).\nЕсли пользователя нужно полностью убрать, используйте `DELETE /ads/v1/account/{accountID}/delete-user/{userID}`.\n",
+        "operationId": "V1SetUserRole",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/V1SetUserRoleIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            },
+            "description": "Ok",
+            "headers": {
+              "Api-Point-Balance": {
+                "description": "Остаток API-баллов после выполнения запроса",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Некорректный запрос"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Не авторизован"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Доступ запрещен"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Слишком много запросов"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Сервис недоступен"
+          }
+        },
+        "summary": "Изменить роль пользователя в аккаунте",
+        "x-cost": {
+          "default": 5,
+          "type": "integer"
+        },
+        "x-rate-limiter": {
+          "default": 500
+        }
+      }
+    },
+    "/ads/v1/account/{accountID}/users": {
+      "get": {
+        "description": "Возвращает список пользователей, имеющих доступ к рекламному аккаунту, с их ролями и флагом `hasLoggedIn` (заходил ли пользователь в аккаунт хотя бы раз).\nМетод без пагинации — возвращает всех пользователей сразу.\n",
+        "operationId": "V1GetUsersListByAccount",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1GetUsersListByAccountOut"
+                }
+              }
+            },
+            "description": "Ok",
+            "headers": {
+              "Api-Point-Balance": {
+                "description": "Остаток API-баллов после выполнения запроса",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Некорректный запрос"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Не авторизован"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Доступ запрещен"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Слишком много запросов"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Сервис недоступен"
+          }
+        },
+        "security": [
+          {
+            "ClientCredentials": []
+          }
+        ],
+        "summary": "Получить список пользователей аккаунта",
+        "x-cost": {
+          "default": 1,
+          "type": "integer"
+        },
+        "x-rate-limiter": {
+          "default": 500
+        }
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "accountID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ]
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.avito.ru/"
+    }
+  ]
+}

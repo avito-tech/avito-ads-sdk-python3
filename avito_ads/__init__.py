@@ -30,6 +30,7 @@ from __future__ import annotations
 
 from ._async import AsyncClient
 from ._sync import Client
+from ._version import API_VERSION, DEFAULT_USER_AGENT, __version__
 from .auth import (
     AsyncTokenStorage,
     InMemoryAsyncTokenStorage,
@@ -39,6 +40,9 @@ from .auth import (
 from .configuration import Configuration
 from .contract_builder import ContractBuilder
 from .enums import (
+    AudienceType,
+    BudgetFrequency,
+    CampaignBudgetFrequency,
     CampaignPaymentModel,
     CampaignStatus,
     CampaignType,
@@ -47,9 +51,14 @@ from .enums import (
     ContractSubject,
     ContractType,
     CreativesStatus,
+    FrequencyPeriod,
+    GroupFormat,
+    GroupPriceControl,
     GroupsStatus,
     LegalRole,
     LegalType,
+    Paces,
+    ScheduleType,
     UserRole,
 )
 from .exceptions import (
@@ -59,6 +68,7 @@ from .exceptions import (
     AvitoAdsError,
     BadRequestError,
     ConfigurationError,
+    ConflictError,
     NetworkError,
     NotFoundError,
     RateLimitError,
@@ -75,10 +85,10 @@ from .filters import (
 )
 from .pagination import ListRequest, PaginatedResult
 
-__version__ = "0.1.0"
-
 __all__ = [
     "__version__",
+    "API_VERSION",
+    "DEFAULT_USER_AGENT",
     # clients
     "Client",
     "AsyncClient",
@@ -102,6 +112,14 @@ __all__ = [
     "CampaignStatus",
     "GroupsStatus",
     "CreativesStatus",
+    "CampaignBudgetFrequency",
+    "BudgetFrequency",
+    "FrequencyPeriod",
+    "GroupFormat",
+    "AudienceType",
+    "Paces",
+    "GroupPriceControl",
+    "ScheduleType",
     # exceptions
     "AvitoAdsError",
     "ConfigurationError",
@@ -111,6 +129,7 @@ __all__ = [
     "AuthenticationError",
     "AccessDeniedError",
     "NotFoundError",
+    "ConflictError",
     "RateLimitError",
     "ServerError",
     "NetworkError",

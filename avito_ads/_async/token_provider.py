@@ -8,6 +8,7 @@ from typing import Optional
 
 import httpx
 
+from .._version import build_user_agent
 from ..auth.credentials import Credentials
 from ..auth.storage import AsyncTokenStorage
 from ..auth.token import AccessToken
@@ -25,7 +26,7 @@ class AsyncTokenProvider:
         storage: AsyncTokenStorage,
         leeway: int = 60,
         timeout: float = 30.0,
-        user_agent: str = "avito-ads-python/0.1.0",
+        user_agent: Optional[str] = None,
         logger: Optional[logging.Logger] = None,
     ) -> None:
         self._client = client
@@ -34,7 +35,7 @@ class AsyncTokenProvider:
         self._storage = storage
         self._leeway = leeway
         self._timeout = timeout
-        self._user_agent = user_agent
+        self._user_agent = build_user_agent(user_agent)
         self._logger = logger
         self._cache_key = credentials.cache_key()
 

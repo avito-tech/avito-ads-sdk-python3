@@ -66,6 +66,16 @@ class NotFoundError(ApiError):
     """HTTP 404 — ресурс не найден."""
 
 
+class ConflictError(ApiError):
+    """HTTP 409 — конфликт версий.
+
+    API возвращает 409 в ``change-budget`` и ``change-price``, если группу
+    изменили параллельно. Наследник :class:`ApiError`: обработчики по базовому
+    классу продолжают ловить эту ошибку. Обычно достаточно перечитать группу и
+    повторить изменение.
+    """
+
+
 class RateLimitError(ApiError):
     """HTTP 429 — превышен лимит запросов.
 

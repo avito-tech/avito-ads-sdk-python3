@@ -7,12 +7,9 @@
 
 from __future__ import annotations
 
-from typing import Dict, Optional
-
-try:  # pragma: no cover - зависит от версии Python
-    from typing import Protocol, runtime_checkable
-except ImportError:  # pragma: no cover
-    from typing_extensions import Protocol, runtime_checkable
+# ``Protocol`` и ``runtime_checkable`` есть в ``typing`` начиная с Python 3.8 —
+# минимальной поддерживаемой версии, поэтому запасной импорт не нужен.
+from typing import Dict, Optional, Protocol, runtime_checkable
 
 from .token import AccessToken
 

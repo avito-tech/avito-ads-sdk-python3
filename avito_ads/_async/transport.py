@@ -15,6 +15,7 @@ import httpx
 from .._core import transport as core
 from .._core.operations import Operation
 from .._core.response import ApiResponse
+from .._version import build_user_agent
 from ..exceptions import NetworkError
 from .token_provider import AsyncTokenProvider
 
@@ -36,7 +37,7 @@ class AsyncHttpTransport:
         max_retries: int = 4,
         retry_base_delay_ms: int = 1000,
         timeout: float = 30.0,
-        user_agent: str = "avito-ads-python/0.1.0",
+        user_agent: Optional[str] = None,
         logger: Optional[logging.Logger] = None,
         sleep: Callable[[float], Awaitable[None]] = _default_sleep,
     ) -> None:
@@ -46,7 +47,7 @@ class AsyncHttpTransport:
         self._max_retries = max_retries
         self._retry_base_delay_ms = retry_base_delay_ms
         self._timeout = timeout
-        self._user_agent = user_agent
+        self._user_agent = build_user_agent(user_agent)
         self._logger = logger
         self._sleep = sleep
 
