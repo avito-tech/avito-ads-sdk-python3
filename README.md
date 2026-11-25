@@ -14,13 +14,13 @@ Python SDK для API **Авито Реклама** (Avito Ads API).
 
 ## Версия SDK и API
 
-Версия SDK = версия публичного API (swagger), под которую он собран. Текущая — **1.4.0**:
+Версия SDK = версия публичного API (swagger), под которую он собран. Текущая — **1.5.1**:
 
 ```python
 import avito_ads
 
-print(avito_ads.__version__)   # "1.4.0" — версия пакета
-print(avito_ads.API_VERSION)   # "1.4.0" — версия swagger (info.version в openapi.json)
+print(avito_ads.__version__)   # "1.5.1" — версия пакета
+print(avito_ads.API_VERSION)   # "1.5.1" — версия swagger (info.version в openapi.json)
 ```
 
 Спецификация лежит в корне репозитория (`openapi.json`); CI проверяет, что версия пакета,
@@ -146,7 +146,7 @@ config = config.with_async_client(httpx.AsyncClient(http2=True))
 
 ```python
 config = config.with_user_agent("my-app/1.0")
-print(config.effective_user_agent)   # my-app/1.0 avito-ads-sdk-python3/1.4.0
+print(config.effective_user_agent)   # my-app/1.0 avito-ads-sdk-python3/1.5.1
 ```
 
 Если в вашем значении метка `avito-ads-sdk-python3/` уже есть (без учёта регистра), второй раз она
@@ -341,7 +341,8 @@ except ConflictError:
 
 ### Статистика
 
-Период не может превышать 100 дней; даты — в формате `YYYY-MM-DD`. Эти ограничения проверяются на стороне клиента.
+Период не может превышать 100 дней; даты — в формате `YYYY-MM-DD`; в запросах по группам и креативам — от 1
+до 5000 ID. Эти ограничения проверяются на стороне клиента.
 
 ```python
 stats = client.statistics.campaign(campaign_id=555, date_from="2025-01-01", date_to="2025-01-31")
@@ -350,6 +351,23 @@ print("Показы:", total.views, "клики:", total.clicks)
 
 by_groups = client.statistics.groups(555, "2025-01-01", "2025-01-31", [101, 102])
 by_creatives = client.statistics.creatives(555, "2025-01-01", "2025-01-31", [201, 202])
+```
+
+Конверсии кампании и групп запрашиваются параметром `include_conversions=True` (по умолчанию `False`). У креативов
+API их не возвращает.
+
+```python
+stats = client.statistics.campaign(555, "2025-01-01", "2025-01-31", include_conversions=True)
+conversions = stats.campaign.total_data.conversions  # None — данных нет
+if conversions is not None:
+    if conversions.contacts is not None:  # контакты и подписки — только click-in
+        print("Контакты:", conversions.contacts.total_count)
+    if conversions.custom_goal is not None:  # главная цель — только click-out
+        print(conversions.custom_goal.name, conversions.goal_hits)
+    # None — значения нет, 0 — ноль; goal_type: contacts / subscriptions / customGoal
+    print("CPA, коп.:", conversions.cpa_kopeks, "по целевому действию", conversions.goal_type)
+
+by_groups = client.statistics.groups(555, "2025-01-01", "2025-01-31", [101, 102], include_conversions=True)
 ```
 
 ### Пользователи
@@ -412,7 +430,7 @@ f = (
 campaigns = client.campaigns.list(f)
 ```
 
-Значения `statuses` передаются в API без проверки на клиенте — доступны все статусы swagger 1.4.0,
+Значения `statuses` передаются в API без проверки на клиенте — доступны все статусы swagger 1.5.1,
 включая `will_launch_soon`, `partially_active`, `will_stop_soon`, `pausing`, `unpausing`.
 
 Пустой фильтр корректно сериализуется в JSON-объект `{}`, как того требует API.

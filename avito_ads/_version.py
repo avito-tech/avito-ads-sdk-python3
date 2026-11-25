@@ -9,10 +9,10 @@ from __future__ import annotations
 
 from typing import Optional
 
-__version__ = "1.4.0"
+__version__ = "1.5.1"
 
 #: Версия публичного API Авито Реклама (``info.version`` в swagger), под которую собран SDK.
-API_VERSION = "1.4.0"
+API_VERSION = "1.5.1"
 
 #: Метка SDK в ``User-Agent``; по ней сервер определяет, что запрос пришёл из Python SDK.
 USER_AGENT_PRODUCT = "avito-ads-sdk-python3"
@@ -25,7 +25,7 @@ def build_user_agent(user_agent: Optional[str] = None) -> str:
     """Собирает итоговое значение заголовка ``User-Agent``.
 
     Пользовательский ``User-Agent`` не заменяет метку SDK, а дополняется ею через
-    пробел: ``my-app/1.0 avito-ads-sdk-python3/1.4.0``. Если метка
+    пробел: ``my-app/1.0 avito-ads-sdk-python3/1.5.1``. Если метка
     ``avito-ads-sdk-python3/`` уже есть (без учёта регистра), второй раз она не
     дописывается. Пустое значение даёт ``User-Agent`` по умолчанию.
     """

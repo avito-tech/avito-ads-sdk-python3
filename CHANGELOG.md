@@ -5,9 +5,48 @@
 Формат основан на [Keep a Changelog](https://keepachangelog.com/ru/1.0.0/),
 проект придерживается [семантического версионирования](https://semver.org/lang/ru/).
 
+Версия SDK равна версии публичного API. Здесь описаны изменения SDK; изменения самого API —
+в [официальном changelog API Авито Рекламы](https://www.avito.ru/developers/api-catalog/ads/changelog), ссылки на его записи
+есть в каждом релизе начиная с 1.4.0.
+
+## [1.5.1] — 2026-11-25
+
+Синхронизация с публичным swagger 1.5.1 (включает изменения 1.5.0).
+
+Изменения API:
+
+- [2026-11-23](https://www.avito.ru/developers/api-catalog/ads/changelog#info/2026-11-23) — swagger 1.5.1, конверсии в статистике;
+- [2026-11-16](https://www.avito.ru/developers/api-catalog/ads/changelog#info/2026-11-16) — swagger 1.5.0, единый лимит длины `name`.
+
+### Added
+- Конверсии в статистике кампании и групп: параметр `include_conversions=False` (только именованный) у
+  `statistics.campaign` и `statistics.groups` в синхронном и асинхронном клиентах. `StatsData.conversions` —
+  `Optional[Conversions]`: `contacts`, `subscriptions` (`ConversionData`, только click-in), `goal_hits`,
+  `cpa_kopeks`, `cr` (`None` — значения нет, `0` — ноль), `goal_type` и `custom_goal` (`CustomGoal`, главная цель
+  click-out кампании). Без параметра запрос не меняется. У креативов `conversions` всегда `None`.
+- Перечисление `ConversionGoalType` (`contacts`, `subscriptions`, `customGoal`); неизвестное значение
+  возвращается строкой как есть.
+
+### Changed
+- `statistics.groups` и `statistics.creatives` проверяют число ID до запроса: от 1 до 5000, иначе
+  `ValidationError`. Раньше API отвечал на пустой список ошибкой 400; больше 5000 ID API теперь тоже отклоняет.
+- Лимит 99 символов у `name` кампаний, групп и креативов (swagger 1.5.0) методов SDK не касается: методов создания
+  и изменения имени в SDK нет.
+
 ## [1.4.0] — 2026-11-13
 
 Синхронизация с публичным swagger 1.4.0. С этой версии **версия SDK = версия публичного API (swagger)**.
+
+Изменения API:
+
+- [2026-10-20](https://www.avito.ru/developers/api-catalog/ads/changelog#info/2026-10-20) — swagger 1.4.0;
+- [2026-10-19](https://www.avito.ru/developers/api-catalog/ads/changelog#info/2026-10-19);
+- [2026-09-30](https://www.avito.ru/developers/api-catalog/ads/changelog#info/2026-09-30) — swagger 1.3.0;
+- [2026-09-04](https://www.avito.ru/developers/api-catalog/ads/changelog#info/2026-09-04) — swagger 1.2.1;
+- [2026-08-24](https://www.avito.ru/developers/api-catalog/ads/changelog#info/2026-08-24) — swagger 1.2.0;
+- [2026-07-22](https://www.avito.ru/developers/api-catalog/ads/changelog#info/2026-07-22) — swagger 1.1.1;
+- [2026-06-30](https://www.avito.ru/developers/api-catalog/ads/changelog#info/2026-06-30) — swagger 1.1.0;
+- [2026-06-06](https://www.avito.ru/developers/api-catalog/ads/changelog#info/2026-06-06).
 
 ### Breaking
 - Пользовательский User-Agent теперь дополняется меткой SDK, а не заменяет её:

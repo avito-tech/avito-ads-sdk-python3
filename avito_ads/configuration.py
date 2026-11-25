@@ -92,7 +92,7 @@ class Configuration:
         """Свой ``User-Agent`` приложения.
 
         Метка SDK не заменяется, а дописывается через пробел:
-        ``my-app/1.0`` превращается в ``my-app/1.0 avito-ads-sdk-python3/1.4.0``
+        ``my-app/1.0`` превращается в ``my-app/1.0 avito-ads-sdk-python3/1.5.1``
         (см. :attr:`effective_user_agent`). Если метка уже есть, второй раз она
         не добавляется.
         """

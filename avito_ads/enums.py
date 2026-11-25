@@ -195,6 +195,14 @@ class BudgetFrequency(BaseEnum):
     ENTIRE_PERIOD = "entirePeriod"
 
 
+class ConversionGoalType(BaseEnum):
+    """Тип целевого действия, по которому рассчитаны CPA и CR (``Conversions.goalType``)."""
+
+    CONTACTS = "contacts"
+    SUBSCRIPTIONS = "subscriptions"
+    CUSTOM_GOAL = "customGoal"
+
+
 class FrequencyPeriod(BaseEnum):
     """Период частотного ограничения (``FrequencyRule.period``)."""
 

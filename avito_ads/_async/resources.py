@@ -284,25 +284,56 @@ class AsyncStatisticsResource(_AsyncResource):
     """Статистика (период <= 100 дней, даты ``YYYY-MM-DD``)."""
 
     async def campaign(
-        self, campaign_id: int, date_from: str, date_to: str
+        self,
+        campaign_id: int,
+        date_from: str,
+        date_to: str,
+        *,
+        include_conversions: bool = False,
     ) -> CampaignStatisticResult:
-        """Статистика по кампании со сводками по группам и креативам."""
+        """Статистика по кампании со сводками по группам и креативам.
+
+        ``include_conversions=True`` добавляет конверсии кампании и групп
+        (``StatsData.conversions``).
+        """
         return await self._http.execute(
-            ops.campaign_statistics(self._account_id, campaign_id, date_from, date_to)
+            ops.campaign_statistics(
+                self._account_id,
+                campaign_id,
+                date_from,
+                date_to,
+                include_conversions=include_conversions,
+            )
         )
 
     async def groups(
-        self, campaign_id: int, date_from: str, date_to: str, group_ids: List[int]
+        self,
+        campaign_id: int,
+        date_from: str,
+        date_to: str,
+        group_ids: List[int],
+        *,
+        include_conversions: bool = False,
     ) -> List[GroupStatistic]:
-        """Статистика по группам кампании."""
+        """Статистика по группам кампании (от 1 до 5000 ID).
+
+        ``include_conversions=True`` добавляет конверсии групп (``StatsData.conversions``).
+        """
         return await self._http.execute(
-            ops.group_statistics(self._account_id, campaign_id, date_from, date_to, group_ids)
+            ops.group_statistics(
+                self._account_id,
+                campaign_id,
+                date_from,
+                date_to,
+                group_ids,
+                include_conversions=include_conversions,
+            )
         )
 
     async def creatives(
         self, campaign_id: int, date_from: str, date_to: str, creative_ids: List[int]
     ) -> List[CreativeStatistic]:
-        """Статистика по креативам кампании."""
+        """Статистика по креативам кампании (от 1 до 5000 ID)."""
         return await self._http.execute(
             ops.creative_statistics(
                 self._account_id, campaign_id, date_from, date_to, creative_ids

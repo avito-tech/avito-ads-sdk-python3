@@ -7,6 +7,94 @@ from typing import List, Optional
 from .base import Model, warn_deprecated
 
 
+class ConversionData(Model):
+    """Количество конверсий одного типа (контактов или подписок) с разбивкой по платформам."""
+
+    @property
+    def total_count(self) -> int:
+        return self._int("totalCount") or 0
+
+    @property
+    def web_count(self) -> int:
+        return self._int("webCount") or 0
+
+    @property
+    def mav_count(self) -> int:
+        return self._int("mavCount") or 0
+
+    @property
+    def android_count(self) -> int:
+        return self._int("androidCount") or 0
+
+    @property
+    def ios_count(self) -> int:
+        return self._int("iosCount") or 0
+
+    @property
+    def cr(self) -> Optional[float]:
+        """CR: отношение событий к кликам (0.05 = 5%)."""
+        return self._float("cr")
+
+
+class CustomGoal(Model):
+    """Главная цель click-out кампании."""
+
+    @property
+    def id(self) -> Optional[int]:
+        return self._int("id")
+
+    @property
+    def name(self) -> Optional[str]:
+        return self._str("name")
+
+
+class Conversions(Model):
+    """Конверсии кампании или группы.
+
+    ``None`` в поле означает, что API не вернул значение; ноль — что значение
+    известно и равно нулю.
+    """
+
+    @property
+    def contacts(self) -> Optional[ConversionData]:
+        """Контакты; только для click-in кампаний."""
+        return self._model("contacts", ConversionData)
+
+    @property
+    def subscriptions(self) -> Optional[ConversionData]:
+        """Подписки; только для click-in кампаний."""
+        return self._model("subscriptions", ConversionData)
+
+    @property
+    def goal_hits(self) -> Optional[int]:
+        """Количество событий главной цели click-out кампании."""
+        return self._int("goalHits")
+
+    @property
+    def cpa_kopeks(self) -> Optional[int]:
+        """Стоимость целевого действия в копейках."""
+        return self._int("cpaKopeks")
+
+    @property
+    def goal_type(self) -> Optional[str]:
+        """Целевое действие, по которому рассчитаны CPA и CR.
+
+        Значения — :class:`~avito_ads.enums.ConversionGoalType`; неизвестное
+        значение возвращается строкой как есть.
+        """
+        return self._str("goalType")
+
+    @property
+    def custom_goal(self) -> Optional[CustomGoal]:
+        """Главная цель click-out кампании."""
+        return self._model("customGoal", CustomGoal)
+
+    @property
+    def cr(self) -> Optional[float]:
+        """CR: отношение целевых событий к кликам (0.05 = 5%)."""
+        return self._float("cr")
+
+
 class StatsData(Model):
     """Точка статистики (за день или агрегированная)."""
 
@@ -83,6 +171,15 @@ class StatsData(Model):
     @property
     def vtr(self) -> Optional[float]:
         return self._float("vtr")
+
+    @property
+    def conversions(self) -> Optional[Conversions]:
+        """Конверсии за день или за период.
+
+        ``None``, если конверсии не запрошены (``include_conversions``) или данных
+        нет. В статистике креативов всегда ``None``.
+        """
+        return self._model("conversions", Conversions)
 
 
 class EntityStatistic(Model):

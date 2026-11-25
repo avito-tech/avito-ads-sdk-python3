@@ -315,6 +315,7 @@ def change_group_price(account_id: int, group_id: int, price: int) -> "Operation
 # --- Statistics -------------------------------------------------------------
 
 _MAX_PERIOD_DAYS = 100
+_MAX_STATS_IDS = 5000
 
 
 def _assert_period(date_from: str, date_to: str) -> None:
@@ -332,26 +333,50 @@ def _assert_period(date_from: str, date_to: str) -> None:
         )
 
 
+def _assert_stats_ids(field: str, ids: List[int]) -> None:
+    if not 1 <= len(ids) <= _MAX_STATS_IDS:
+        raise ValidationError(
+            f"{field} должен содержать от 1 до {_MAX_STATS_IDS} ID, передано {len(ids)}."
+        )
+
+
 def campaign_statistics(
-    account_id: int, campaign_id: int, date_from: str, date_to: str
+    account_id: int,
+    campaign_id: int,
+    date_from: str,
+    date_to: str,
+    include_conversions: bool = False,
 ) -> "Operation[CampaignStatisticResult]":
     _assert_period(date_from, date_to)
+    body: Dict[str, Any] = {"dateFrom": date_from, "dateTo": date_to}
+    if include_conversions:
+        body["includeConversions"] = True
     return Operation(
         "POST",
         account_path(account_id, f"campaigns/{campaign_id}/stats"),
-        {"dateFrom": date_from, "dateTo": date_to},
+        body,
         lambda r: CampaignStatisticResult.from_dict(r.data),
     )
 
 
 def group_statistics(
-    account_id: int, campaign_id: int, date_from: str, date_to: str, group_ids: List[int]
+    account_id: int,
+    campaign_id: int,
+    date_from: str,
+    date_to: str,
+    group_ids: List[int],
+    include_conversions: bool = False,
 ) -> "Operation[List[GroupStatistic]]":
     _assert_period(date_from, date_to)
+    ids = list(group_ids)
+    _assert_stats_ids("group_ids", ids)
+    body: Dict[str, Any] = {"dateFrom": date_from, "dateTo": date_to, "groupIDs": ids}
+    if include_conversions:
+        body["includeConversions"] = True
     return Operation(
         "POST",
         account_path(account_id, f"campaigns/{campaign_id}/groups/stats"),
-        {"dateFrom": date_from, "dateTo": date_to, "groupIDs": list(group_ids)},
+        body,
         lambda r: _entities(r.data.get("groups", []), GroupStatistic),
     )
 
@@ -360,10 +385,12 @@ def creative_statistics(
     account_id: int, campaign_id: int, date_from: str, date_to: str, creative_ids: List[int]
 ) -> "Operation[List[CreativeStatistic]]":
     _assert_period(date_from, date_to)
+    ids = list(creative_ids)
+    _assert_stats_ids("creative_ids", ids)
     return Operation(
         "POST",
         account_path(account_id, f"campaigns/{campaign_id}/creatives/stats"),
-        {"dateFrom": date_from, "dateTo": date_to, "creativeIDs": list(creative_ids)},
+        {"dateFrom": date_from, "dateTo": date_to, "creativeIDs": ids},
         lambda r: _entities(r.data.get("creatives", []), CreativeStatistic),
     )
 

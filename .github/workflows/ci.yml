@@ -7,7 +7,8 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    # 24.04, а не latest: для Ubuntu 26.04 в setup-python нет Python 3.8 и 3.9.
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
