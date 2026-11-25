@@ -666,6 +666,77 @@
         },
         "type": "object"
       },
+      "ConversionData": {
+        "nullable": true,
+        "properties": {
+          "androidCount": {
+            "type": "integer"
+          },
+          "cr": {
+            "type": "number"
+          },
+          "iosCount": {
+            "type": "integer"
+          },
+          "mavCount": {
+            "type": "integer"
+          },
+          "totalCount": {
+            "type": "integer"
+          },
+          "webCount": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "totalCount",
+          "webCount",
+          "mavCount",
+          "androidCount",
+          "iosCount",
+          "cr"
+        ],
+        "type": "object"
+      },
+      "Conversions": {
+        "description": "Контакты и подписки возвращаются только для click-in кампаний; для click-out кампаний эти поля отсутствуют.",
+        "nullable": true,
+        "properties": {
+          "contacts": {
+            "$ref": "#/components/schemas/ConversionData"
+          },
+          "cpaKopeks": {
+            "description": "Стоимость целевого действия в копейках",
+            "nullable": true,
+            "type": "integer"
+          },
+          "cr": {
+            "description": "Отношение целевых событий к кликам (0.05 = 5%)",
+            "nullable": true,
+            "type": "number"
+          },
+          "customGoal": {
+            "$ref": "#/components/schemas/CustomGoal"
+          },
+          "goalHits": {
+            "description": "Количество событий главной click-out цели кампании",
+            "nullable": true,
+            "type": "integer"
+          },
+          "goalType": {
+            "enum": [
+              "contacts",
+              "subscriptions",
+              "customGoal"
+            ],
+            "type": "string"
+          },
+          "subscriptions": {
+            "$ref": "#/components/schemas/ConversionData"
+          }
+        },
+        "type": "object"
+      },
       "CreateCampaignPaymentModel": {
         "description": "Модель оплаты кампании для создания",
         "enum": [
@@ -973,6 +1044,23 @@
             "type": "string"
           }
         },
+        "type": "object"
+      },
+      "CustomGoal": {
+        "description": "Главная цель click-out кампании",
+        "nullable": true,
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
         "type": "object"
       },
       "DateRange": {
@@ -1797,6 +1885,9 @@
             "description": "Количество кликов",
             "type": "integer"
           },
+          "conversions": {
+            "$ref": "#/components/schemas/Conversions"
+          },
           "cpc": {
             "description": "Средняя стоимость CPC",
             "format": "float",
@@ -2400,7 +2491,8 @@
             "type": "integer"
           },
           "name": {
-            "description": "Название кампании",
+            "description": "Название кампании. Максимум 99 кодовых точек Unicode.",
+            "maxLength": 99,
             "type": "string"
           },
           "paymentModel": {
@@ -2530,7 +2622,7 @@
             "type": "array"
           },
           "name": {
-            "description": "Название группы",
+            "description": "Название группы. Максимум 99 кодовых точек Unicode.",
             "maxLength": 99,
             "minLength": 1,
             "type": "string"
@@ -2859,6 +2951,10 @@
             "description": "Дата окончания периода в формате YYYY-MM-DD",
             "format": "date",
             "type": "string"
+          },
+          "includeConversions": {
+            "description": "Запросить конверсии. По умолчанию false.",
+            "type": "boolean"
           }
         },
         "required": [
@@ -3062,10 +3158,11 @@
         "description": "Request body для запроса статистики по креативам кампании. Максимальный период между dateFrom и dateTo — 100 дней.",
         "properties": {
           "creativeIDs": {
-            "description": "Список ID креативов для получения статистики",
+            "description": "Список ID креативов для получения статистики, от 1 до 5000 за запрос",
             "items": {
               "type": "integer"
             },
+            "maxItems": 5000,
             "minItems": 1,
             "type": "array"
           },
@@ -3173,12 +3270,17 @@
             "type": "string"
           },
           "groupIDs": {
-            "description": "Список ID групп для получения статистики",
+            "description": "Список ID групп для получения статистики, от 1 до 5000 за запрос",
             "items": {
               "type": "integer"
             },
+            "maxItems": 5000,
             "minItems": 1,
             "type": "array"
+          },
+          "includeConversions": {
+            "description": "Включить post-click конверсии и статистику по главной click-out цели. По умолчанию false.",
+            "type": "boolean"
           }
         },
         "required": [
@@ -3632,7 +3734,7 @@
   "info": {
     "description": "Публичное API кабинета Авито Реклама",
     "title": "Авито Реклама",
-    "version": "1.4.0",
+    "version": "1.5.1",
     "x-skip-documentation": false
   },
   "openapi": "3.0.0",
@@ -4518,7 +4620,7 @@
         }
       ],
       "post": {
-        "description": "Возвращает статистику по конкретным креативам указанной кампании за заданный период. В `creativeIDs` нужно передать минимум один ID креатива.\n**Ограничение:** максимальный период между `dateFrom` и `dateTo` — 100 дней.\nСтатистика обновляется раз в 30 минут, поэтому более частые запросы не дадут более свежих данных.\n",
+        "description": "Возвращает статистику по конкретным креативам указанной кампании за заданный период. В `creativeIDs` нужно передать от 1 до 5000 ID креативов. Повторяющиеся ID учитываются в лимите. При превышении лимита возвращается HTTP 400.\n**Ограничение:** максимальный период между `dateFrom` и `dateTo` — 100 дней.\nСтатистика обновляется раз в 30 минут, поэтому более частые запросы не дадут более свежих данных.\n",
         "operationId": "V1GetCreativesStatistic",
         "requestBody": {
           "content": {
@@ -4557,7 +4659,7 @@
                 }
               }
             },
-            "description": "Некорректный запрос"
+            "description": "Некорректный запрос, в том числе больше 5000 ID в creativeIDs"
           },
           "401": {
             "content": {
@@ -4657,7 +4759,7 @@
         }
       ],
       "post": {
-        "description": "Возвращает статистику по конкретным группам объявлений внутри указанной кампании за заданный период. В `groupIDs` нужно передать минимум один ID группы.\n**Ограничение:** максимальный период между `dateFrom` и `dateTo` — 100 дней.\nСтатистика обновляется раз в 30 минут, поэтому более частые запросы не дадут более свежих данных.\n",
+        "description": "Возвращает статистику по конкретным группам объявлений внутри указанной кампании за заданный период. В `groupIDs` нужно передать от 1 до 5000 ID групп. Повторяющиеся ID учитываются в лимите. При превышении лимита возвращается HTTP 400.\n**Ограничение:** максимальный период между `dateFrom` и `dateTo` — 100 дней.\nСтатистика обновляется раз в 30 минут, поэтому более частые запросы не дадут более свежих данных.\n",
         "operationId": "V1GetGroupsStatistic",
         "requestBody": {
           "content": {
@@ -4696,7 +4798,7 @@
                 }
               }
             },
-            "description": "Некорректный запрос"
+            "description": "Некорректный запрос, в том числе больше 5000 ID в groupIDs"
           },
           "401": {
             "content": {

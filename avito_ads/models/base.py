@@ -79,6 +79,11 @@ class Model:
                 continue
         return result
 
+    def _model(self, key: str, model: Type[M]) -> Optional[M]:
+        """Вложенный объект, обёрнутый в модель ``model``; ``None``, если его нет в ответе."""
+        value = self._data.get(key)
+        return model.from_dict(value) if isinstance(value, dict) else None
+
     def _models(self, key: str, model: Type[M]) -> List[M]:
         """Список вложенных объектов, обёрнутых в модель ``model``."""
         return [model.from_dict(row) for row in self._list(key) if isinstance(row, dict)]
